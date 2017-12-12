@@ -1,8 +1,8 @@
 "use strict";
-import React, { Component, PropTypes } from "react";
-// import { TypeChooser } from "cefc-reactstockcharts/lib/helper";
+import React, { Component } from "react";
 import Chart from "./Chart";
 import styles from "./style/index.less";
+import PropTypes from "prop-types";
 
 class stockChartKline extends Component {
   static propTypes = {
@@ -43,10 +43,10 @@ class stockChartKline extends Component {
     let finalData = this.calculateData();
 
     return <div className="container_bg_ChatBkg">
+        <Chart type="hybrid" data={finalData} />
       </div>;
   }
 }
 
 export default stockChartKline;
-        // <Chart type="hybrid" data={finalData} />;
 
