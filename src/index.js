@@ -123,54 +123,17 @@ class stockChartKline extends Component {
           tickStrokeWidth: 1
         }
       : {};
-    return (
-      <div className="container_bg_ChatBkg">
-        <ChartCanvas
-          height={height}
-          width={width}
-          ratio={ratio}
-          margin={margin}
-          type={type}
-          seriesName="MSFT"
-          data={data}
-          xScale={xScale}
-          xAccessor={xAccessor}
-          xExtents={xExtents}
-          panEvent={true}
-          zoomEvent={false}
-          mouseMoveEvent={true}
-          zIndex={0}
-          clamp={false}
-        >
-          <Chart
-            id={1}
-            yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]}
-            height={lineChartHeight}
-            origin={(w, h) => [0, 0]}
-          >
-            <axes.XAxis
-              axisAt="bottom"
-              orient="bottom"
-              ticks={1}
-              zoomEnabled={false}
-              showTicks={false}
-              showDomain={false}
-            />
-            <axes.YAxis
-              axisAt="right"
-              orient="right"
-              ticks={2}
-              zoomEnabled={false}
-              showTicks={false}
-              showDomain={false}
-            />
+    return <div className="container_bg_ChatBkg">
+        <ChartCanvas height={height} width={width} ratio={ratio} margin={margin} type={type} displayXAccessor={displayXAccessor} seriesName="MSFT" data={data} xScale={xScale} xAccessor={xAccessor} xExtents={xExtents} panEvent={true} zoomEvent={false} mouseMoveEvent={true} zIndex={0} clamp={false}>
+          <Chart id={1} yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]} height={lineChartHeight} origin={(w, h) => [0, 0]}>
+            <axes.XAxis axisAt="bottom" orient="bottom" ticks={1} zoomEnabled={false} showTicks={false} showDomain={false} />
+            <axes.YAxis axisAt="right" orient="right" ticks={2} zoomEnabled={false} showTicks={false} showDomain={false} />
 
             <series.CandlestickSeries />
             <series.LineSeries yAccessor={d => d.MA5} stroke="white" />
             <series.LineSeries yAccessor={d => d.MA10} stroke="yellow" />
             <series.LineSeries yAccessor={d => d.MA30} stroke="magenta" />
-            <tooltip.HoverTooltip
-              tooltipContent={tooltipContent([
+            <tooltip.HoverTooltip tooltipContent={tooltipContent([
                 {
                   label: `MA5`,
                   value: d => d.MA5,
@@ -186,37 +149,19 @@ class stockChartKline extends Component {
                   value: d => d.MA30,
                   stroke: "magenta"
                 }
-              ])}
-              fontSize={15}
-            />
+              ])} fontSize={15} />
           </Chart>
-          <Chart
-            id={2}
-            yExtents={[d => d.volume]}
-            height={barChartHeight}
-            origin={(w, h) => [0, h - 40]}
-          >
-            <axes.YAxis
-              axisAt="left"
-              orient="left"
-              ticks={5}
-              tickFormat={format(".0s")}
-              showTicks={false}
-              showDomain={false}
-            />
+          <Chart id={2} yExtents={[d => d.volume]} height={barChartHeight} origin={(w, h) => [0, h - 40]}>
+            <axes.YAxis axisAt="left" orient="left" ticks={5} tickFormat={format(".0s")} showTicks={false} showDomain={false} />
 
-            <series.BarSeries
-              yAccessor={d => {
+            <series.BarSeries yAccessor={d => {
                 return d.volume;
-              }}
-              fill={d => {
+              }} fill={d => {
                 return d.volume ? d.volumeColor : "#393c43";
-              }}
-            />
+              }} />
           </Chart>
         </ChartCanvas>{" "}
-      </div>
-    );
+      </div>;
   }
 }
 
