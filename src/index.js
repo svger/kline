@@ -6,7 +6,6 @@ import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import { ChartCanvas, Chart } from "cefc-reactstockcharts";
 import {
-  indicator,
   axes,
   helper,
   utils,
@@ -94,35 +93,6 @@ class stockChartKline extends Component {
       lineChartHeight,
       barChartHeight
     } = this.props;
-
-    const ema20 = indicator
-      .ema()
-      .id(0)
-      .options({ windowSize: 20 })
-      .merge((d, c) => {
-        d.ema20 = c;
-      })
-      .accessor(d => d.ema20);
-    const ema30 = indicator
-      .ema()
-      .id(0)
-      .options({ windowSize: 30 })
-      .merge((d, c) => {
-        d.ema30 = c;
-      })
-      .accessor(d => d.ema30);
-
-    const ema50 = indicator
-      .ema()
-      .id(2)
-      .options({ windowSize: 50 })
-      .merge((d, c) => {
-        d.ema50 = c;
-      })
-      .accessor(d => {
-        return d.ema50;
-      });
-
     const margin = { left: 0, right: 25, top: 10, bottom: 20 };
     const xScaleProvider = scale.discontinuousTimeScaleProvider.inputDateAccessor(
       d => d.date
@@ -200,7 +170,6 @@ class stockChartKline extends Component {
             <series.LineSeries yAccessor={d => d.MA10} stroke="yellow" />
             <series.LineSeries yAccessor={d => d.MA30} stroke="magenta" />
             <tooltip.HoverTooltip
-              yAccessor={ema50.accessor()}
               tooltipContent={tooltipContent([
                 {
                   label: `MA5`,
