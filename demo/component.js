@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 class App extends React.Component {
 
   handleKLineChartConfig = () => {
-
     let { series, yAxis } = kLineChartConfig;
     let candlestickData = series[0].data;
     let yAxisLeft = yAxis[0].tickPositions;
@@ -77,20 +76,44 @@ class App extends React.Component {
     });
 
     return dataArr;
+  };
+
+  calculateData(data) {
+    let array = [];
+    data.map((item, index) => {
+      let date = new Date(item.x);
+      let date1 = date.toUTCString();
+      let finalDate = new Date(date1);
+      let newItem = {};
+      newItem.date = finalDate;
+      newItem.close = item.close;
+      newItem.high = item.high;
+      newItem.low = item.low;
+      newItem.open = item.open;
+      newItem.volume = item.y;
+      newItem.volumeColor = item.color;
+      newItem.x = item.x;
+      newItem.MA5 = item.MA5;
+      newItem.MA10 = item.MA10;
+      newItem.MA30 = item.MA30;
+      array.push(newItem);
+    });
+
+    return array;
   }
 
   render() {
-    let dataArr = kLineChartConfig && this.handleKLineChartConfig(kLineChartConfig);
+    let dataArr =
+      kLineChartConfig && this.handleKLineChartConfig(kLineChartConfig);
+    let finalData = this.calculateData(dataArr);
 
     return <div className="demoContainer">
-        <Kline data={dataArr}/>
+        <Kline chartData={finalData}/>
       </div>;
   }
 }
 
 export default App;
-
-
 
 const kLineChartConfig = {
   global: { timezoneOffset: 0, useUTC: true },
