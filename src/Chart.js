@@ -68,7 +68,7 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 	}
 
 	render() {
-		let { type, data: initialData, width, ratio, height } = this.props;
+		let { type, data: initialData, width, ratio, height, lineChartHeight, barChartHeight } = this.props;
     const ema20 = indicator.ema()
       .id(0)
       .options({ windowSize: 20 })
@@ -125,7 +125,7 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 
     return <div>
         <ChartCanvas height={height} width={width} ratio={ratio} margin={margin} type={type} seriesName="MSFT" data={data} xScale={xScale} xAccessor={xAccessor} xExtents={xExtents} panEvent={true} zoomEvent={false} mouseMoveEvent={true} zIndex={0} clamp={false}>
-          <Chart id={1} yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]} height={168} origin={(w, h) => [0, 0]}>
+          <Chart id={1} yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]} height={lineChartHeight} origin={(w, h) => [0, 0]}>
             <axes.XAxis axisAt="bottom" orient="bottom" ticks={1} zoomEnabled={false} showTicks={false} showDomain={false} />
             <axes.YAxis axisAt="right" orient="right" ticks={2} zoomEnabled={false} showTicks={false} showDomain={false} />
 
@@ -133,7 +133,6 @@ class CandleStickChartWithHoverTooltip extends React.Component {
             <series.LineSeries yAccessor={d => d.MA5} stroke="white" />
             <series.LineSeries yAccessor={d => d.MA10} stroke="yellow" />
             <series.LineSeries yAccessor={d => d.MA30} stroke="magenta" />
-
             <tooltip.HoverTooltip yAccessor={ema50.accessor()} tooltipContent={tooltipContent(
                 [
                   {
@@ -154,7 +153,7 @@ class CandleStickChartWithHoverTooltip extends React.Component {
                 ]
               )} fontSize={15} />
           </Chart>
-          <Chart id={2} yExtents={[d => d.volume]} height={40} origin={(w, h) => [0, h - 40]}>
+          <Chart id={2} yExtents={[d => d.volume]} height={barChartHeight} origin={(w, h) => [0, h - 40]}>
             <axes.YAxis axisAt="left" orient="left" ticks={5} tickFormat={format(".0s")} showTicks={false} showDomain={false} />
 
             <series.BarSeries yAccessor={d => {
@@ -169,14 +168,16 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 }
 
 CandleStickChartWithHoverTooltip.propTypes = {
-	data: PropTypes.array.isRequired,
-	width: PropTypes.number.isRequired,
-	ratio: PropTypes.number.isRequired,
-	type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
+  data: PropTypes.array.isRequired,
+  type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
+  lineChartHeight: PropTypes.number,
+  barChartHeight: PropTypes.number
 };
 
 CandleStickChartWithHoverTooltip.defaultProps = {
-	type: "svg",
+  type: "svg",
+  lineChartHeight: 168,
+  barChartHeight: 40
 };
 
 CandleStickChartWithHoverTooltip = helper.fitDimensions(

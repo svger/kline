@@ -1,34 +1,14 @@
-# Toast
-弹出全局提示框，可选择手动或者自动关闭
+# KLine
+K线图组件
 
-## API
-
-### Toast
-
-
-### Toast.success
 
 | 属性        | 说明                          | 类型            | 默认值         |
 | --------- | --------------------------- | ------------- | ----------- |
-| prefixCls | 样式前缀，如：`cefc-toast`，可用于自定义样式 | string        | `cefc-toast` |
-| message | 需要的展示内容，支持 React 元素 | React.Element / string        | `必传` |
-| duration  | 展示在界面里的时间，传0时右上角出现关闭按钮需要手动关闭Toast                         | number |   `2`         |
+| data | data是K线图的数据来源，数据结构必须为{"x":1510531200000,"open":27.45,"high":27.49,"low":26.8,"close":27.06,"fixed":"","color":"green","y":347146,"MA5":27.55,"MA10":28.09,"MA30":27.22} | array        |  null |
+| lineChartHeight | 设置上面折线图的高度 | number        |  168 |
+| barChartHeight | 设置下面面柱状的高度 | number        |  40 |
+| type |  绘图类型可以选: svg 或 hybrid。hybrid 将使用 canvas 创建 DataSeries 的内容,但轴和其他元素是 svg | oneOf(["svg", "hybrid"])        |  "svg" |
 
-
-
-### Toast.danger
-
-| 属性        | 说明                          | 类型            | 默认值         |
-| --------- | --------------------------- | ------------- | ----------- |
-| prefixCls | 样式前缀，如：`cefc-toast`，可用于自定义样式 | string        | `cefc-toast` |
-| message | 需要的展示内容，支持 React 元素 | React.Element / string        | `必传` |
-| duration  | 展示在界面里的时间，传0时右上角出现关闭按钮需要手动关闭Toast                         | number |   `3`         |
-
-
-
-
-### Toast.close
-
-#### 手动关闭当前展示的Toast
+ 
 
 

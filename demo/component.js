@@ -1,6 +1,6 @@
 import React from 'react';
 import Kline from "../src";
-import styles from "../src//style/index.less";
+import styles from "../src/style/index.less";
 import PropTypes from "prop-types";
 
 class App extends React.Component {
@@ -83,7 +83,7 @@ class App extends React.Component {
     let dataArr = kLineChartConfig && this.handleKLineChartConfig(kLineChartConfig);
 
     return <div className="demoContainer">
-        <Kline data={dataArr} />
+        <Kline data={dataArr}/>
       </div>;
   }
 }
