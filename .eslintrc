@@ -134,7 +134,7 @@
     // 禁止将 undefined 作为标识符
     "no-undefined":0,
     // 禁止出现未使用过的变量
-    "no-unused-vars": [2, {"vars":"all","args":"none"}],
+    "no-unused-vars": [2, {"vars":"all","args":"none", "varsIgnorePattern": "styles"}],
     // 不允许在变量定义之前使用它们
     "no-use-before-define": 0,
     // 禁止 var 声明 与外层作用域的变量同名
@@ -213,7 +213,7 @@
     //要求或禁止对象字面量中方法和属性使用简写语法
     "object-shorthand": 0,
     //强制使用es6字符串模板代替字符串拼接
-    "prefer-template": 2,
+    "prefer-template": "off",
     "import/no-dynamic-require": 0,
     "import/no-extraneous-dependencies": 0,
 
