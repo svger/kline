@@ -1524,10 +1524,11 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.npmjs.org/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
 
-cefc-reactstockcharts@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/cefc-reactstockcharts/-/cefc-reactstockcharts-0.0.3.tgz#a51b271343bb78b6505a23ede35f17ad5dc6cf22"
+cefc-reactstockcharts@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/cefc-reactstockcharts/-/cefc-reactstockcharts-0.0.6.tgz#1fa862b6b16089fd31986a818b631893b29de0e0"
   dependencies:
+    cefc-tools "0.0.4"
     d3 "^4.12.0"
     d3-array "^1.2.0"
     d3-collection "^1.0.4"
@@ -1594,23 +1595,9 @@ cefc-tools@0.0.4:
     webpack-dev-server "~2.9.4"
     webpack-stream "~4.0.0"
 
-cefc-ui-icon@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/cefc-ui-icon/-/cefc-ui-icon-0.0.4.tgz#150806446e93f1750cd0f29d1bf0a5f7ff200c39"
-  dependencies:
-    cefc-ui-style "~0.0.1"
-    classnames "~2.2.5"
-    prop-types "~15.6.0"
-    react "~16.1.1"
-    react-dom "~16.1.1"
-
 cefc-ui-style@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/cefc-ui-style/-/cefc-ui-style-0.0.1.tgz#877959b28655ee8a6f49636b7fd92cfe4909fd0f"
-
-cefc-ui-style@~0.0.1:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/cefc-ui-style/-/cefc-ui-style-0.0.4.tgz#237c1bf1053d153ffa50868073b298dbb89a00a3"
 
 cefc-utils@0.0.3:
   version "0.0.3"
@@ -1691,7 +1678,7 @@ clap@^1.0.9:
   dependencies:
     chalk "^1.1.3"
 
-classnames@^2.2.5, classnames@~2.2.5:
+classnames@^2.2.5:
   version "2.2.5"
   resolved "http://10.199.107.120:8888/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -5820,7 +5807,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.6.0, prop-types@~15.6.0:
+prop-types@^15.5.10, prop-types@^15.6.0:
   version "15.6.0"
   resolved "http://10.199.107.120:8888/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
