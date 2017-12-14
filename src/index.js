@@ -160,7 +160,7 @@ class stockChartKline extends Component {
                 return d.volume ? d.volumeColor : "#393c43";
               }} />
           </Chart>
-        </ChartCanvas>{" "}
+        </ChartCanvas>
       </div>;
   }
 }
