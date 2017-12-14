@@ -1,0 +1,268 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "globals": {
+    "__DEV__": true
+  },
+  /**
+   * "off" 或 0 - 关闭规则
+   * "warn" 或 1 - 开启规则，使用警告级别的错误：warn (不会导致程序退出),
+   * "error" 或 2 - 开启规则，使用错误级别的错误：error (当被触发的时候，程序会退出)
+   */
+  "rules": {
+
+    ////////////////
+    // DON'T NEED //
+    ////////////////
+
+    // 要求在注释周围有空行 ( 要求在块级注释之前有一空行)
+    "lines-around-comment": 0,
+    // 要求所有的 var 声明出现在它们所在的作用域顶部
+    "vars-on-top": 0,
+    "global-require": 0,
+    "import/newline-after-import": 0,
+    "import/prefer-default-export": 0,
+    //Missing file extension
+    "import/extensions": 0,
+    "no-unused-expressions": 0,
+    "import/no-unresolved": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    //The body of a for-in should be wrapped in an if statement to filter unwanted properties from the prototype
+    "guard-for-in": 0,
+    //Using 'ForInStatement' is not allowed
+    "no-restricted-syntax": 0,
+    "semi": 0,
+    "eol-last": 0,
+    "strict": 0,
+    "no-return-assign": 0,
+    // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
+    "no-undef": 0,
+
+    ////////////////
+    // 格式化错误 //
+    ////////////////
+
+    // 强制所有控制语句使用一致的括号风格
+    "curly": [2, "all"],
+    // switch 语句强制 default 分支，也可添加 // no default 注释取消此次警告
+    "default-case": 2,
+    // 使用 === 替代 == allow-null允许null和undefined==
+    "eqeqeq": [2, "allow-null"],
+    "prefer-const": 0,
+    // 禁止条件表达式中出现赋值操作符
+    "no-cond-assign": 2,
+    //禁止在条件中使用常量表达式 if(true) if(1)
+    "no-constant-condition": 2,
+    // 数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号, always参数：必须带末尾的逗号，
+    // always-multiline：多行模式必须带逗号，单行模式不能带逗号
+    "comma-dangle": [2,"only-multiline"],
+    //禁止使用console
+    "no-console": 1,
+    // 禁用 debugger
+    "no-debugger": 1,
+    // 禁用 alert、confirm 和 prompt
+    "no-alert": 1,
+    // 禁止 function 定义中出现重名参数
+    "no-dupe-args": 2,
+    // 禁止对象字面量中出现重复的 key
+    "no-dupe-keys": 2,
+    // 禁止重复的 case 标签
+    "no-duplicate-case": 2,
+    // 禁止在正则表达式中使用空字符集 (/^abc[]/)
+    "no-empty-character-class": 2,
+    // 禁止在嵌套的块中出现 function 或 var 声明
+    "no-inner-declarations": [2,"functions"],
+    // 禁止空语句块
+    "no-empty": 2,
+    // 禁止不必要的括号 //(a * b) + c;//报错
+    "no-extra-parens": 0,
+    // 禁止不必要的分号
+    "no-extra-semi": 2,
+    // 禁止对 function 声明重新赋值
+    "no-func-assign": 2,
+    // 禁止在字符串和注释之外不规则的空白
+    "no-irregular-whitespace": 2,   //  ----
+    // 禁止在return、throw、continue 和 break语句之后出现不可达代码
+    /*
+     function foo() {
+     return true;
+     console.log("done");
+     }//错误
+     */
+    "no-unreachable":2,
+    // 禁止 if 语句中有 return 之后有 else
+    "no-else-return": 2,
+    // 禁止出现空函数.如果一个函数包含了一条注释，它将不会被认为有问题。
+    "no-empty-function": [0, { "allow": ["arrowFunctions"]}],
+    // 禁止 case 语句落空
+    "no-fallthrough": 2,
+    // 禁止在全局范围内使用 var 和命名的 function 声明
+    "no-implicit-globals": 2,
+    // 禁止使用多个空格
+    "no-multi-spaces": 0,
+    // 禁止在非赋值或条件语句中使用 new 操作符
+    "no-new": 2,
+    // 禁止对 Function 对象使用 new 操作符
+    "no-new-func": 2,
+    // 禁止对 String，Number 和 Boolean 使用 new 操作符
+    "no-new-wrappers": 2,
+    // 不允许箭头功能，在那里他们可以混淆的比较
+    "no-confusing-arrow": 0,
+    // 禁止使用 var 多次声明同一变量
+    "no-redeclare": 2,
+    // 禁止自身比较
+    "no-self-compare": 2,
+    //函数调用时 函数名与()之间不能有空格
+    "no-spaced-func": 2,
+    //禁止使用一些关键字
+    "no-restricted-properties": 0,
+    //行限制100字
+    "max-len": 0,
+
+    //////////////
+    // 变量声明 //
+    //////////////
+
+    //变量声明时必须赋初值
+    "init-declarations": 2,
+    // 不允许在 case 子句中使用词法声明
+    "no-case-declarations": 0,
+    // 不允许标签与变量同名
+    "no-label-var": 2,
+    // 禁止将变量初始化为 undefined
+    "no-undef-init":2,
+    // 禁止将 undefined 作为标识符
+    "no-undefined":0,
+    // 禁止出现未使用过的变量
+    "no-unused-vars": [2, {"vars":"all","args":"none"}],
+    // 不允许在变量定义之前使用它们
+    "no-use-before-define": 0,
+    // 禁止 var 声明 与外层作用域的变量同名
+    "no-shadow": 0,
+
+
+    //////////////
+    // 风格指南 //
+    //////////////
+
+    //字符串强制使用单引号
+    "quotes": [2, "single"],
+    //强制在jsx中使用双引号
+    "jsx-quotes": [2, "prefer-double"],
+    // 指定数组的元素之间要以空格隔开(, 后面)， never参数：[ 之前和 ] 之后不能带空格，always参数：[ 之前和 ] 之后必须带空格
+    "array-bracket-spacing": [2, "never"],
+    //该规则规定了在对象字面量语法中key和value之间的空白，冒号前不要留空格，冒号后面需留一个空格
+    "key-spacing": [2, { "beforeColon": false, "afterColon": true }],
+    // 控制逗号前后的空格
+    "comma-spacing": [2, {"before":false,"after":true}],
+    //'{' 或 '}'前后需要有一个空格
+    "object-curly-spacing": 2,
+    "object-curly-newline": 0,
+    // 要求 return 语句之前有一空行
+    "newline-before-return": 2,
+    // 强制使用命名的 function 表达式
+    "func-names": 0,
+    // 禁用行尾空格
+    "no-trailing-spaces":2,
+    //禁止使用++
+    "no-plusplus": 0,
+    //禁止不必要的布尔转换
+    "no-extra-boolean-cast": 0,
+    // 强制在parseInt()使用基数参数
+    "radix": 0,
+    // 不允许多个空行
+    "no-multiple-empty-lines": [2, {"max":2}],
+    //不允许函数开头出现下划线
+    "no-underscore-dangle": 0,
+    // 要求或禁止在 var 声明周围换行
+    "one-var-declaration-per-line": 0,
+    // 要求或禁止块内填充
+    "padded-blocks": 0,
+    // 要求对象字面量属性名称用引号括起来
+    "quote-props": 0,
+    // 强制在圆括号内使用一致的空格
+    "space-before-blocks": 0,
+    // 强制在function的左括号之前使用一致的空格
+    "space-before-function-paren": 0,
+    // 强制在注释中 // 或 /* 使用一致的空格
+    "spaced-comment": [0,"always", {"markers": ["global","globals","eslint","eslint-disable","*package","!"] }],
+    //强制驼峰法命名,
+    "camelcase": 2,
+    // 要求操作符周围有空格
+    "space-infix-ops": 2,
+    // 不允许对 function 的参数进行重新赋值
+    "no-param-reassign": 0,
+    // 要求 return 语句要么总是指定返回的值，要么不指定
+    "consistent-return":0,
+
+    //////////////
+    // ES6.相关 //
+    //////////////
+
+    //箭头函数中，如果函数体里只有一句代码时可以省略大括号
+    //规定是否可以省略大括号
+    "arrow-body-style": [0, "always"],
+    //禁止使用var,使用let或const代替
+    "no-var": 2,
+    //规定了参数是否需要圆括号包围
+    "arrow-parens": [0, "always"],
+    //规定了箭头函数的箭头前后是否加空格
+    "arrow-spacing": [2, { "before": true, "after": true }],
+    //禁止覆盖class命名，也就是说变量名不要和class名重名
+    "no-class-assign": 2,
+    //要求或禁止对象字面量中方法和属性使用简写语法
+    "object-shorthand": 0,
+    //强制使用es6字符串模板代替字符串拼接
+    "prefer-template": 2,
+    "import/no-dynamic-require": 0,
+    "import/no-extraneous-dependencies": 0,
+
+    //////////////
+    // React相关 //
+    //////////////
+
+    "react/jsx-quotes": 0,
+    "react/prefer-stateless-function": 0,
+    //必须添加propTypes
+    "react/prop-types": [2],
+    /*
+      <Test
+        name="aaa"
+        lastName="nnnn"
+      />
+    */
+    "react/jsx-indent-props": [0, 2],
+    // 不允许在props直接使用boolean值
+    "react/jsx-boolean-value": [2, "never"],
+    // <Test name={name} /> { 和 }不允许有空格
+    "react/jsx-curly-spacing": [2, "never", {"allowMultiline": false}],
+    //// <Test name={name} />  props的 = 前后不允许有空格
+    "react/jsx-equals-spacing": [2, "never"],
+    //事件的命名需要以handle开头,如果是引用自props,则使用on
+    "react/jsx-handler-names": [0],
+    //
+    "react/jsx-indent": [2, 2],
+    /*检测需要加入key的组建
+     * {data.map((x, i) => {
+     *   return <Test key={i}>x</Test>;
+     *  })};
+     */
+    "react/jsx-key": [2],
+    //规定写在JSX中的组件引用中的props只允许单独占一行
+    "react/jsx-max-props-per-line": [0, {"maximum": 1}],
+    //不允许在jsx的props中出现.bind或者 () => {}的用法
+    "react/jsx-no-bind": [2, {"allowArrowFunctions": true}],
+    //不允许重复定义jsx中的props
+    "react/jsx-no-duplicate-props": [2],
+    "react/forbid-prop-types": [0],
+    //是否以jsx的后缀命名文件夹
+    "react/jsx-filename-extension": [0],
+    "react/no-unused-prop-types":[0, {"skipShapeProps": true}],
+    //Empty components are self-closing
+    "react/self-closing-comp": 0,
+    //不允许使用refs
+    "react/no-string-refs": 0,
+    "react/require-default-props": 0,
+    "react/no-array-index-key": 0
+  }
+}
