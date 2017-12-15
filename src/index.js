@@ -73,9 +73,9 @@ class stockChartKline extends Component {
       ratio,
       height,
       lineChartHeight,
-      barChartHeight
+      barChartHeight,
+      chartMargin
     } = this.props;
-    const margin = { left: 0, right: 25, top: 10, bottom: 20 };
     const xScaleProvider = scale.discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
     const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(chartData);
     const start = xAccessor(utils.last(data));
@@ -84,7 +84,7 @@ class stockChartKline extends Component {
 
     return (
       <div className="container_bg_ChatBkg">
-        <ChartCanvas height={height} width={width} ratio={ratio} margin={margin} type={type} displayXAccessor={displayXAccessor} seriesName="MSFT" data={data} xScale={xScale} xAccessor={xAccessor} xExtents={xExtents} zIndex={0} panEvent mouseMoveEvent zoomEvent={false} clamp={false}>
+        <ChartCanvas height={height} width={width} ratio={ratio} margin={chartMargin} type={type} displayXAccessor={displayXAccessor} seriesName="MSFT" data={data} xScale={xScale} xAccessor={xAccessor} xExtents={xExtents} zIndex={0} panEvent mouseMoveEvent zoomEvent={false} clamp={false}>
           <Chart id={1} yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]} height={lineChartHeight} origin={(w, h) => [0, 0]}>
             <axes.XAxis axisAt="bottom" orient="bottom" ticks={1} zoomEnabled={false} showTicks={false} showDomain={false} />
             <axes.YAxis axisAt="right" orient="right" ticks={2} zoomEnabled={false} showTicks={false} showDomain={false} />
@@ -135,12 +135,21 @@ stockChartKline.propTypes = {
   barChartHeight: PropTypes.number,
   ratio: PropTypes.number,
   height: PropTypes.number,
+  chartMargin: PropTypes.shape({
+    left: PropTypes.number,
+    right: PropTypes.number,
+    top: PropTypes.number,
+    bottom: PropTypes.number
+  }),
 };
 
 stockChartKline.defaultProps = {
   type: 'hybrid',
   lineChartHeight: 168,
-  barChartHeight: 40
+  barChartHeight: 40,
+  chartMargin: {
+    left: 5, right: 5, top: 10, bottom: 0
+  },
 };
 
 export default helper.fitDimensions(stockChartKline);
