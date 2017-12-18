@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -103,9 +105,11 @@ var stockChartKline = function (_Component) {
           ratio = _props.ratio,
           height = _props.height,
           lineChartHeight = _props.lineChartHeight,
-          barChartHeight = _props.barChartHeight;
+          barChartHeight = _props.barChartHeight,
+          chartMargin = _props.chartMargin,
+          showGrid = _props.showGrid,
+          backgroundColor = _props.backgroundColor;
 
-      var margin = { left: 0, right: 25, top: 10, bottom: 20 };
       var xScaleProvider = _cefcReactstockcharts.scale.discontinuousTimeScaleProvider.inputDateAccessor(function (d) {
         return d.date;
       });
@@ -119,13 +123,21 @@ var stockChartKline = function (_Component) {
       var start = xAccessor(_cefcReactstockcharts.utils.last(data));
       var end = xAccessor(data[Math.max(0, data.length - 150)]);
       var xExtents = [start, end];
+      var gridWidth = width - chartMargin.left - chartMargin.right;
+      var yGrid = showGrid ? {
+        innerTickSize: -1 * gridWidth,
+        tickStrokeDasharray: 'Solid',
+        tickStrokeOpacity: 1,
+        tickStrokeWidth: 1,
+        tickSize: 100
+      } : {};
 
       return _react2.default.createElement(
         'div',
-        { className: 'container_bg_ChatBkg' },
+        { className: 'container_bg_ChatBkg', style: { 'backgroundColor': backgroundColor } },
         _react2.default.createElement(
           _cefcReactstockcharts.ChartCanvas,
-          { height: height, width: width, ratio: ratio, margin: margin, type: type, displayXAccessor: displayXAccessor, seriesName: 'MSFT', data: data, xScale: xScale, xAccessor: xAccessor, xExtents: xExtents, zIndex: 0, panEvent: true, mouseMoveEvent: true, zoomEvent: false, clamp: false },
+          { height: height, width: width, ratio: ratio, margin: chartMargin, type: type, displayXAccessor: displayXAccessor, seriesName: 'MSFT', data: data, xScale: xScale, xAccessor: xAccessor, xExtents: xExtents, zIndex: 0, panEvent: true, mouseMoveEvent: true, zoomEvent: false, clamp: false },
           _react2.default.createElement(
             _cefcReactstockcharts.Chart,
             { id: 1, yExtents: [function (d) {
@@ -134,7 +146,7 @@ var stockChartKline = function (_Component) {
                 return [0, 0];
               } },
             _react2.default.createElement(_cefcReactstockcharts.axes.XAxis, { axisAt: 'bottom', orient: 'bottom', ticks: 1, zoomEnabled: false, showTicks: false, showDomain: false }),
-            _react2.default.createElement(_cefcReactstockcharts.axes.YAxis, { axisAt: 'right', orient: 'right', ticks: 2, zoomEnabled: false, showTicks: false, showDomain: false }),
+            _react2.default.createElement(_cefcReactstockcharts.axes.YAxis, _extends({ axisAt: 'right', orient: 'right', ticks: 3, zoomEnabled: false, showTickLabel: false }, yGrid, { showDomain: false })),
             _react2.default.createElement(_cefcReactstockcharts.series.CandlestickSeries, null),
             _react2.default.createElement(_cefcReactstockcharts.series.LineSeries, { yAccessor: function yAccessor(d) {
                 return d.MA5;
@@ -174,7 +186,7 @@ var stockChartKline = function (_Component) {
               }], height: barChartHeight, origin: function origin(w, h) {
                 return [0, h - 40];
               } },
-            _react2.default.createElement(_cefcReactstockcharts.axes.YAxis, { axisAt: 'left', orient: 'left', ticks: 5, tickFormat: (0, _d3Format.format)('.0s'), showTicks: false, showDomain: false }),
+            _react2.default.createElement(_cefcReactstockcharts.axes.YAxis, _extends({ axisAt: 'left', orient: 'left', ticks: 1, zoomEnabled: false, showTickLabel: false }, yGrid, { showDomain: false })),
             _react2.default.createElement(_cefcReactstockcharts.series.BarSeries, {
               yAccessor: function yAccessor(d) {
                 return d.volume;
@@ -198,13 +210,25 @@ stockChartKline.propTypes = {
   width: _propTypes2.default.number,
   barChartHeight: _propTypes2.default.number,
   ratio: _propTypes2.default.number,
-  height: _propTypes2.default.number
+  height: _propTypes2.default.number,
+  chartMargin: _propTypes2.default.shape({
+    left: _propTypes2.default.number,
+    right: _propTypes2.default.number,
+    top: _propTypes2.default.number,
+    bottom: _propTypes2.default.number
+  }),
+  showGrid: _propTypes2.default.bool,
+  backgroundColor: _propTypes2.default.string
 };
 
 stockChartKline.defaultProps = {
   type: 'hybrid',
   lineChartHeight: 168,
-  barChartHeight: 40
+  barChartHeight: 40,
+  chartMargin: {
+    left: 5, right: 5, top: 10, bottom: 0
+  },
+  showGrid: true
 };
 
 exports.default = _cefcReactstockcharts.helper.fitDimensions(stockChartKline);

@@ -75,7 +75,8 @@ class stockChartKline extends Component {
       lineChartHeight,
       barChartHeight,
       chartMargin,
-      showGrid
+      showGrid,
+      backgroundColor
     } = this.props;
     const xScaleProvider = scale.discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
     const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(chartData);
@@ -92,11 +93,11 @@ class stockChartKline extends Component {
     } : {};
 
     return (
-      <div className="container_bg_ChatBkg">
+      <div className="container_bg_ChatBkg" style={{'backgroundColor': backgroundColor}}>
         <ChartCanvas height={height} width={width} ratio={ratio} margin={chartMargin} type={type} displayXAccessor={displayXAccessor} seriesName="MSFT" data={data} xScale={xScale} xAccessor={xAccessor} xExtents={xExtents} zIndex={0} panEvent mouseMoveEvent zoomEvent={false} clamp={false}>
           <Chart id={1} yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]} height={lineChartHeight} origin={(w, h) => [0, 0]}>
             <axes.XAxis axisAt="bottom" orient="bottom" ticks={1} zoomEnabled={false} showTicks={false} showDomain={false} />
-            <axes.YAxis axisAt="right" orient="right" ticks={3} zoomEnabled={false} showTickLabel={false} {...yGrid} />
+            <axes.YAxis axisAt="right" orient="right" ticks={3} zoomEnabled={false} showTickLabel={false} {...yGrid} showDomain={false} />
             <series.CandlestickSeries />
             <series.LineSeries yAccessor={d => d.MA5} stroke="white" />
 
@@ -123,7 +124,7 @@ class stockChartKline extends Component {
             />
           </Chart>
           <Chart id={2} yExtents={[d => d.volume]} height={barChartHeight} origin={(w, h) => [0, h - 40]}>
-            <axes.YAxis axisAt="left" orient="left" ticks={1} zoomEnabled={false} showTickLabel={false} {...yGrid} />
+            <axes.YAxis axisAt="left" orient="left" ticks={1} zoomEnabled={false} showTickLabel={false} {...yGrid} showDomain={false} />
             <series.BarSeries
                 yAccessor={d => {
                   return d.volume;
@@ -152,6 +153,7 @@ stockChartKline.propTypes = {
     bottom: PropTypes.number
   }),
   showGrid: PropTypes.bool,
+  backgroundColor: PropTypes.string
 };
 
 stockChartKline.defaultProps = {
