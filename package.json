@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "babel-loader": "^7.1.2",
-    "cefc-reactstockcharts": "^0.0.6",
+    "cefc-reactstockcharts": "^0.0.10",
     "cefc-tools": "0.0.4",
     "cefc-ui-style": "0.0.1",
     "cefc-utils": "0.0.3",
