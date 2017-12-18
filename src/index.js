@@ -82,23 +82,14 @@ class stockChartKline extends Component {
     const start = xAccessor(utils.last(data));
     const end = xAccessor(data[Math.max(0, data.length - 150)]);
     const xExtents = [start, end];
-    let gridHeight = height - chartMargin.top - chartMargin.bottom;
     let gridWidth = width - chartMargin.left - chartMargin.right;
     let yGrid = showGrid ? {
-          innerTickSize: -1 * gridWidth,
-          tickStrokeDasharray: 'Solid',
-          tickStrokeOpacity: 1,
-          tickStrokeWidth: 1,
-          tickSize: 100,
-        } : {};
-    let xGrid = showGrid ? {
-          innerTickSize: -1 * gridHeight,
-          tickStrokeDasharray: 'Solid',
-          tickStrokeOpacity: 1,
-          tickStrokeWidth: 1,
-          tickSize: 100,
-          tickValues: [parseInt(data.length / 2)],
-        } : {};
+      innerTickSize: -1 * gridWidth,
+      tickStrokeDasharray: 'Solid',
+      tickStrokeOpacity: 1,
+      tickStrokeWidth: 1,
+      tickSize: 100,
+    } : {};
 
     return (
       <div className="container_bg_ChatBkg">

@@ -1524,9 +1524,9 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.npmjs.org/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
 
-cefc-reactstockcharts@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/cefc-reactstockcharts/-/cefc-reactstockcharts-0.0.6.tgz#1fa862b6b16089fd31986a818b631893b29de0e0"
+cefc-reactstockcharts@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/cefc-reactstockcharts/-/cefc-reactstockcharts-0.0.8.tgz#d2a05de0d1fb2790819c9b6714f9f1d2ed369147"
   dependencies:
     cefc-tools "0.0.4"
     d3 "^4.12.0"

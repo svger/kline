@@ -11,6 +11,7 @@ K线图组件
 | width | 设置整个图表的宽度 | number        |  填充整个父盒子 |
 | type |  绘图类型可以选: svg 或 hybrid。hybrid 将使用 canvas 创建 DataSeries 的内容,但轴和其他元素是 svg | oneOf(["svg", "hybrid"])        |  "hybrid" |
 | chartMargin |  chartMargin用来设置图表的margin，传入形式为chartMargin={{left: 0, right: 0, top: 10, bottom: 50}} | object       |  left: 0, right: 0, top: 10, bottom: 50 |
+| showGrid |  是否显示网格线 | bool       |  true|
 
  
 
