@@ -22,6 +22,10 @@ function tooltipContent(ys) {
     let year = xTime.getFullYear();
     let month = xTime.getMonth() + 1;
     let day = xTime.getDate();
+
+    if (String(day).length < 2) {
+      day = '0' + String(day);
+    }
     let currentDate = '日期:' + year + '/' + month + '/' + day;
     let { MA5, MA10, MA30, close, volume } = currentItem;
     let kLineJudge = (!MA5 && !MA10 && !MA30 && !close && !volume);
@@ -30,25 +34,37 @@ function tooltipContent(ys) {
       return null;
     }
 
+    // 下面两个if是为了实现开盘价和收盘价同行，最高价和最低价同行
+    let openCloseLabel = {};
+    let lowHighLabel = {};
+
+    if (currentItem.open || currentItem.close) {
+      // 判断openCloseLabel.label等于什么
+      currentItem.open && (openCloseLabel.label = '开盘价');
+      !currentItem.open && currentItem.close && (openCloseLabel.label = '收盘价');
+      // 判断openCloseLabel.value等于什么
+      let openValue = currentItem.open && numberFormat(currentItem.open);
+      let closeLabel = currentItem.close && '收盘价';
+      let closeValue = currentItem.close && numberFormat(currentItem.close);
+      openCloseLabel.value = `${openValue}  ${closeLabel}: ${closeValue}`;
+    }
+
+    if (currentItem.high || currentItem.low) {
+      // 判断lowHighLabel.label等于什么
+      currentItem.high && (lowHighLabel.label = '最高价');
+      !currentItem.high && currentItem.low && (lowHighLabel.label = '最低价');
+      // 判断lowHighLabel.value等于什么
+      let highValue = currentItem.high && numberFormat(currentItem.high);
+      let lowLabel = currentItem.low && '最低价';
+      let lowValue = currentItem.low && numberFormat(currentItem.low);
+      lowHighLabel.value = `${highValue}  ${lowLabel}: ${lowValue}`;
+    }
+
     return {
       x: currentDate,
       y: [
-        {
-          label: '开盘价',
-          value: currentItem.open && numberFormat(currentItem.open)
-        },
-        {
-          label: '收盘价',
-          value: currentItem.close && numberFormat(currentItem.close)
-        },
-        {
-          label: '最高价',
-          value: currentItem.high && numberFormat(currentItem.high)
-        },
-        {
-          label: '最低价',
-          value: currentItem.low && numberFormat(currentItem.low)
-        },
+        openCloseLabel,
+        lowHighLabel,
         {
           label: '成交量',
           value: currentItem.volume && numberFormat(currentItem.volume)
@@ -66,19 +82,7 @@ function tooltipContent(ys) {
 class stockChartKline extends Component {
 
   render() {
-    let {
-      type,
-      chartData,
-      width,
-      ratio,
-      height,
-      lineChartHeight,
-      barChartHeight,
-      chartMargin,
-      showGrid,
-      offset,
-      backgroundColor
-    } = this.props;
+    let { type, chartData, width, ratio, height, lineChartHeight, barChartHeight, chartMargin, showGrid, offset, backgroundColor } = this.props;
     const xScaleProvider = scale.discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
     const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(chartData);
     const start = xAccessor(utils.last(data));

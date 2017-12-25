@@ -1,8 +1,8 @@
 {
   "name": "cefc-kline",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "CEFC-UI Component",
-  "main": "build/index.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "node_modules/.bin/tools run build",
     "server": "node_modules/.bin/tools run server",
@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "babel-loader": "^7.1.2",
-    "cefc-reactstockcharts": "^0.0.13",
+    "cefc-reactstockcharts": "^0.0.14",
     "cefc-tools": "0.0.4",
     "cefc-ui-style": "0.0.1",
     "cefc-utils": "0.0.3",
