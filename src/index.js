@@ -134,7 +134,8 @@ class stockChartKline extends Component {
                         value: d => d.MA30,
                         stroke: 'magenta'
                     }
-                    ])} fontSize={15}
+                    ])}
+                fontSize={12}
                 offset={offset}
             />
           </Chart>
