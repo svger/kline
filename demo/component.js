@@ -108,7 +108,7 @@ class App extends React.Component {
 
       return (
       <div className="demoContainer">
-        <Kline chartData={finalData} chartMargin={{left: 0, right: 0, top: 10, bottom: 0}} showGrid={true} backgroundColor="#393c43" />
+        <Kline chartData={finalData} chartMargin={{left: 0, right: 0, top: 10, bottom: 0}} showGrid={true} backgroundColor="#393c43" barTickValues={[780093]} lineTickValues={[12.6, 12.9]}/>
       </div>
     );
   }

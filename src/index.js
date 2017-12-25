@@ -23,7 +23,7 @@ function tooltipContent(ys) {
     let month = xTime.getMonth() + 1;
     let day = xTime.getDate();
 
-    if (String(day).length < 2) {
+    if (String(day).length < 2) { //说明是121这样的日期，转为1201
       day = '0' + String(day);
     }
     let currentDate = '日期:' + year + '/' + month + '/' + day;
@@ -82,27 +82,36 @@ function tooltipContent(ys) {
 class stockChartKline extends Component {
 
   render() {
-    let { type, chartData, width, ratio, height, lineChartHeight, barChartHeight, chartMargin, showGrid, offset, backgroundColor } = this.props;
+    let { type, chartData, width, ratio, height, lineChartHeight, barChartHeight, chartMargin, showGrid, offset, backgroundColor, lineTickValues, barTickValues  } = this.props;
     const xScaleProvider = scale.discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
     const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(chartData);
     const start = xAccessor(utils.last(data));
     const end = xAccessor(data[Math.max(0, data.length - 150)]);
     const xExtents = [start, end];
     let gridWidth = width - chartMargin.left - chartMargin.right;
-    let yGrid = showGrid ? {
+    let lineYGrid = showGrid ? {
       innerTickSize: -1 * gridWidth,
       tickStrokeDasharray: 'Solid',
       tickStrokeOpacity: 1,
       tickStrokeWidth: 1,
       tickSize: 100,
+      tickValues: lineTickValues
+    } : {};
+    let barYGrid = showGrid ? {
+      innerTickSize: -1 * gridWidth,
+      tickStrokeDasharray: 'Solid',
+      tickStrokeOpacity: 1,
+      tickStrokeWidth: 1,
+      tickSize: 100,
+      tickValues: barTickValues
     } : {};
 
     return (
       <div className="container_bg_ChatBkg" style={{'backgroundColor': backgroundColor}}>
         <ChartCanvas height={height} width={width} ratio={ratio} margin={chartMargin} type={type} displayXAccessor={displayXAccessor} seriesName="MSFT" data={data} xScale={xScale} xAccessor={xAccessor} xExtents={xExtents} zIndex={0} panEvent mouseMoveEvent zoomEvent={false} clamp={false}>
           <Chart id={1} yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]} height={lineChartHeight} origin={(w, h) => [0, 0]}>
-            <axes.XAxis axisAt="bottom" orient="bottom" ticks={1} zoomEnabled={false} showTicks={false} showDomain={false} />
-            <axes.YAxis axisAt="right" orient="right" ticks={3} zoomEnabled={false} showTickLabel={false} {...yGrid} showDomain={false} />
+            <axes.XAxis axisAt="bottom" orient="bottom" zoomEnabled={false} showTicks={false} showDomain={false} />
+            <axes.YAxis axisAt="right" orient="right" zoomEnabled={false} showTickLabel={false} {...lineYGrid} showDomain={false} />
             <series.CandlestickSeries offset={offset} />
             <series.LineSeries yAccessor={d => d.MA5} stroke="white" />
 
@@ -130,7 +139,7 @@ class stockChartKline extends Component {
             />
           </Chart>
           <Chart id={2} yExtents={[d => d.volume]} height={barChartHeight} origin={(w, h) => [0, h - 40]}>
-            <axes.YAxis axisAt="left" orient="left" ticks={1} zoomEnabled={false} showTickLabel={false} {...yGrid} showDomain={false} />
+            <axes.YAxis axisAt="left" orient="left" zoomEnabled={false} showTickLabel={false} {...barYGrid} showDomain={false} />
             <series.BarSeries
                 yAccessor={d => {
                   return d.volume;
@@ -149,10 +158,12 @@ stockChartKline.propTypes = {
   chartData: PropTypes.array.isRequired,
   type: PropTypes.oneOf(['svg', 'hybrid']),
   lineChartHeight: PropTypes.number,
-  width: PropTypes.number,
   barChartHeight: PropTypes.number,
+  lineTickValues: PropTypes.array,
+  barTickValues: PropTypes.array,
   ratio: PropTypes.number,
   height: PropTypes.number,
+  width: PropTypes.number,
   chartMargin: PropTypes.shape({
     left: PropTypes.number,
     right: PropTypes.number,
@@ -168,6 +179,8 @@ stockChartKline.defaultProps = {
   type: 'hybrid',
   lineChartHeight: 168,
   barChartHeight: 40,
+  lineTickValues: [],
+  barTickValues: [],
   offset: 3,
   chartMargin: {
     left: 5, right: 5, top: 10, bottom: 0
