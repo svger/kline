@@ -89,14 +89,29 @@ class stockChartKline extends Component {
     const end = xAccessor(data[Math.max(0, data.length - 150)]);
     const xExtents = [start, end];
     let gridWidth = width - chartMargin.left - chartMargin.right;
-    let lineYGrid = showGrid ? {
-      innerTickSize: -1 * gridWidth,
-      tickStrokeDasharray: 'Solid',
-      tickStrokeOpacity: 1,
-      tickStrokeWidth: 1,
-      tickSize: 100,
-      tickValues: lineTickValues
-    } : {};
+    let lineYGrid = {};
+    let lineYDashGrid = {};
+
+    if (lineTickValues.length >= 5) {
+      lineYGrid = showGrid ? {
+        innerTickSize: -1 * gridWidth,
+        tickStrokeDasharray: 'Solid',
+        tickStrokeOpacity: 1,
+        tickStrokeWidth: 1,
+        tickSize: 100,
+        tickValues: [lineTickValues[0], lineTickValues[2], lineTickValues[4]]
+      } : {};
+
+      lineYDashGrid = showGrid ? {
+        innerTickSize: -1 * gridWidth,
+        tickStrokeDasharray: 'ShortDash',
+        tickStrokeOpacity: 1,
+        tickStrokeWidth: 1,
+        tickSize: 100,
+        tickValues: [lineTickValues[1], lineTickValues[3]]
+      } : {};
+    }
+
     let barYGrid = showGrid ? {
       innerTickSize: -1 * gridWidth,
       tickStrokeDasharray: 'Solid',
@@ -112,6 +127,8 @@ class stockChartKline extends Component {
           <Chart id={1} yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]} height={lineChartHeight} origin={(w, h) => [0, 0]}>
             <axes.XAxis axisAt="bottom" orient="bottom" zoomEnabled={false} showTicks={false} showDomain={false} />
             <axes.YAxis axisAt="right" orient="right" zoomEnabled={false} showTickLabel={false} {...lineYGrid} showDomain={false} />
+            <axes.YAxis axisAt="right" orient="right" zoomEnabled={false} showTickLabel={false} {...lineYDashGrid} showDomain={false} />
+
             <series.CandlestickSeries offset={offset} />
             <series.LineSeries yAccessor={d => d.MA5} stroke="white" />
 
@@ -139,7 +156,7 @@ class stockChartKline extends Component {
                 offset={offset}
             />
           </Chart>
-          <Chart id={2} yExtents={[d => d.volume]} height={barChartHeight} origin={(w, h) => [0, h - 40]}>
+          <Chart id={2} yExtents={[d => d.volume]} height={barChartHeight} origin={(w, h) => [0, h - barChartHeight]}>
             <axes.YAxis axisAt="left" orient="left" zoomEnabled={false} showTickLabel={false} {...barYGrid} showDomain={false} />
             <series.BarSeries
                 yAccessor={d => {
@@ -179,7 +196,7 @@ stockChartKline.propTypes = {
 stockChartKline.defaultProps = {
   type: 'hybrid',
   lineChartHeight: 168,
-  barChartHeight: 40,
+  barChartHeight: 50,
   lineTickValues: [],
   barTickValues: [],
   offset: 3,
