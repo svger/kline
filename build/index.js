@@ -18,7 +18,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _d3Format = require('d3-format');
 
-var _cefcReactstockcharts = require('cefc-reactstockcharts');
+var _cefcStockcharts = require('cefc-stockcharts');
 
 var _index = require('./style/index.less');
 
@@ -43,6 +43,11 @@ function tooltipContent(ys) {
     var year = xTime.getFullYear();
     var month = xTime.getMonth() + 1;
     var day = xTime.getDate();
+
+    if (String(day).length < 2) {
+      //说明是121这样的日期，转为1201
+      day = '0' + String(day);
+    }
     var currentDate = '日期:' + year + '/' + month + '/' + day;
     var MA5 = currentItem.MA5,
         MA10 = currentItem.MA10,
@@ -56,21 +61,35 @@ function tooltipContent(ys) {
       return null;
     }
 
+    // 下面两个if是为了实现开盘价和收盘价同行，最高价和最低价同行
+    var openCloseLabel = {};
+    var lowHighLabel = {};
+
+    if (currentItem.open || currentItem.close) {
+      // 判断openCloseLabel.label等于什么
+      currentItem.open && (openCloseLabel.label = '开盘价');
+      !currentItem.open && currentItem.close && (openCloseLabel.label = '收盘价');
+      // 判断openCloseLabel.value等于什么
+      var openValue = currentItem.open && numberFormat(currentItem.open);
+      var closeLabel = currentItem.close && '收盘价';
+      var closeValue = currentItem.close && numberFormat(currentItem.close);
+      openCloseLabel.value = openValue + '  ' + closeLabel + ': ' + closeValue;
+    }
+
+    if (currentItem.high || currentItem.low) {
+      // 判断lowHighLabel.label等于什么
+      currentItem.high && (lowHighLabel.label = '最高价');
+      !currentItem.high && currentItem.low && (lowHighLabel.label = '最低价');
+      // 判断lowHighLabel.value等于什么
+      var highValue = currentItem.high && numberFormat(currentItem.high);
+      var lowLabel = currentItem.low && '最低价';
+      var lowValue = currentItem.low && numberFormat(currentItem.low);
+      lowHighLabel.value = highValue + '  ' + lowLabel + ': ' + lowValue;
+    }
+
     return {
       x: currentDate,
-      y: [{
-        label: '开盘价',
-        value: currentItem.open && numberFormat(currentItem.open)
-      }, {
-        label: '收盘价',
-        value: currentItem.close && numberFormat(currentItem.close)
-      }, {
-        label: '最高价',
-        value: currentItem.high && numberFormat(currentItem.high)
-      }, {
-        label: '最低价',
-        value: currentItem.low && numberFormat(currentItem.low)
-      }, {
+      y: [openCloseLabel, lowHighLabel, {
         label: '成交量',
         value: currentItem.volume && numberFormat(currentItem.volume)
       }].concat(ys.map(function (each) {
@@ -108,9 +127,12 @@ var stockChartKline = function (_Component) {
           barChartHeight = _props.barChartHeight,
           chartMargin = _props.chartMargin,
           showGrid = _props.showGrid,
-          backgroundColor = _props.backgroundColor;
+          offset = _props.offset,
+          backgroundColor = _props.backgroundColor,
+          lineTickValues = _props.lineTickValues,
+          barTickValues = _props.barTickValues;
 
-      var xScaleProvider = _cefcReactstockcharts.scale.discontinuousTimeScaleProvider.inputDateAccessor(function (d) {
+      var xScaleProvider = _cefcStockcharts.scale.discontinuousTimeScaleProvider.inputDateAccessor(function (d) {
         return d.date;
       });
 
@@ -120,44 +142,69 @@ var stockChartKline = function (_Component) {
           xAccessor = _xScaleProvider.xAccessor,
           displayXAccessor = _xScaleProvider.displayXAccessor;
 
-      var start = xAccessor(_cefcReactstockcharts.utils.last(data));
+      var start = xAccessor(_cefcStockcharts.utils.last(data));
       var end = xAccessor(data[Math.max(0, data.length - 150)]);
       var xExtents = [start, end];
       var gridWidth = width - chartMargin.left - chartMargin.right;
-      var yGrid = showGrid ? {
+      var lineYGrid = {};
+      var lineYDashGrid = {};
+
+      if (lineTickValues.length >= 4) {
+        lineYGrid = showGrid ? {
+          innerTickSize: -1 * gridWidth,
+          tickStrokeDasharray: 'Solid',
+          tickStrokeOpacity: 1,
+          tickStrokeWidth: 1,
+          tickSize: 100,
+          tickValues: [lineTickValues[0], lineTickValues[2]]
+        } : {};
+
+        lineYDashGrid = showGrid ? {
+          innerTickSize: -1 * gridWidth,
+          tickStrokeDasharray: 'ShortDash',
+          tickStrokeOpacity: 1,
+          tickStrokeWidth: 1,
+          tickSize: 100,
+          tickValues: [lineTickValues[1], lineTickValues[3]]
+        } : {};
+      }
+
+      var barYGrid = showGrid ? {
         innerTickSize: -1 * gridWidth,
         tickStrokeDasharray: 'Solid',
         tickStrokeOpacity: 1,
         tickStrokeWidth: 1,
-        tickSize: 100
+        tickSize: 100,
+        tickValues: barTickValues
       } : {};
 
       return _react2.default.createElement(
         'div',
         { className: 'container_bg_ChatBkg', style: { 'backgroundColor': backgroundColor } },
         _react2.default.createElement(
-          _cefcReactstockcharts.ChartCanvas,
+          _cefcStockcharts.ChartCanvas,
           { height: height, width: width, ratio: ratio, margin: chartMargin, type: type, displayXAccessor: displayXAccessor, seriesName: 'MSFT', data: data, xScale: xScale, xAccessor: xAccessor, xExtents: xExtents, zIndex: 0, panEvent: true, mouseMoveEvent: true, zoomEvent: false, clamp: false },
           _react2.default.createElement(
-            _cefcReactstockcharts.Chart,
+            _cefcStockcharts.Chart,
             { id: 1, yExtents: [function (d) {
                 return [d.high, d.low, d.MA5, d.MA10, d.MA30];
               }], height: lineChartHeight, origin: function origin(w, h) {
                 return [0, 0];
               } },
-            _react2.default.createElement(_cefcReactstockcharts.axes.XAxis, { axisAt: 'bottom', orient: 'bottom', ticks: 1, zoomEnabled: false, showTicks: false, showDomain: false }),
-            _react2.default.createElement(_cefcReactstockcharts.axes.YAxis, _extends({ axisAt: 'right', orient: 'right', ticks: 3, zoomEnabled: false, showTickLabel: false }, yGrid, { showDomain: false })),
-            _react2.default.createElement(_cefcReactstockcharts.series.CandlestickSeries, null),
-            _react2.default.createElement(_cefcReactstockcharts.series.LineSeries, { yAccessor: function yAccessor(d) {
+            _react2.default.createElement(_cefcStockcharts.axes.XAxis, { axisAt: 'bottom', orient: 'bottom', zoomEnabled: false, showTicks: false, showDomain: false }),
+            _react2.default.createElement(_cefcStockcharts.axes.YAxis, _extends({ axisAt: 'right', orient: 'right', zoomEnabled: false, showTickLabel: false }, lineYGrid, { showDomain: false })),
+            _react2.default.createElement(_cefcStockcharts.axes.YAxis, _extends({ axisAt: 'right', orient: 'right', zoomEnabled: false, showTickLabel: false }, lineYDashGrid, { showDomain: false })),
+            _react2.default.createElement(_cefcStockcharts.series.CandlestickSeries, { offset: offset }),
+            _react2.default.createElement(_cefcStockcharts.series.LineSeries, { yAccessor: function yAccessor(d) {
                 return d.MA5;
               }, stroke: 'white' }),
-            _react2.default.createElement(_cefcReactstockcharts.series.LineSeries, { yAccessor: function yAccessor(d) {
+            _react2.default.createElement(_cefcStockcharts.series.LineSeries, { yAccessor: function yAccessor(d) {
                 return d.MA10;
               }, stroke: 'yellow' }),
-            _react2.default.createElement(_cefcReactstockcharts.series.LineSeries, { yAccessor: function yAccessor(d) {
+            _react2.default.createElement(_cefcStockcharts.series.LineSeries, { yAccessor: function yAccessor(d) {
                 return d.MA30;
               }, stroke: 'magenta' }),
-            _react2.default.createElement(_cefcReactstockcharts.tooltip.HoverTooltip, {
+            _react2.default.createElement(_cefcStockcharts.tooltip.HoverTooltip, {
               tooltipContent: tooltipContent([{
                 label: 'MA5',
                 value: function value(d) {
@@ -176,23 +223,26 @@ var stockChartKline = function (_Component) {
                   return d.MA30;
                 },
                 stroke: 'magenta'
-              }]), fontSize: 15
+              }]),
+              fontSize: 12,
+              offset: offset
             })
           ),
           _react2.default.createElement(
-            _cefcReactstockcharts.Chart,
+            _cefcStockcharts.Chart,
             { id: 2, yExtents: [function (d) {
                 return d.volume;
               }], height: barChartHeight, origin: function origin(w, h) {
-                return [0, h - 40];
+                return [0, h - barChartHeight];
               } },
-            _react2.default.createElement(_cefcReactstockcharts.axes.YAxis, _extends({ axisAt: 'left', orient: 'left', ticks: 1, zoomEnabled: false, showTickLabel: false }, yGrid, { showDomain: false })),
-            _react2.default.createElement(_cefcReactstockcharts.series.BarSeries, {
+            _react2.default.createElement(_cefcStockcharts.axes.YAxis, _extends({ axisAt: 'left', orient: 'left', zoomEnabled: false, showTickLabel: false }, barYGrid, { showDomain: false })),
+            _react2.default.createElement(_cefcStockcharts.series.BarSeries, {
               yAccessor: function yAccessor(d) {
                 return d.volume;
               }, fill: function fill(d) {
                 return d.volume ? d.volumeColor : '#393c43';
-              }
+              },
+              offset: offset
             })
           )
         )
@@ -207,10 +257,12 @@ stockChartKline.propTypes = {
   chartData: _propTypes2.default.array.isRequired,
   type: _propTypes2.default.oneOf(['svg', 'hybrid']),
   lineChartHeight: _propTypes2.default.number,
-  width: _propTypes2.default.number,
   barChartHeight: _propTypes2.default.number,
+  lineTickValues: _propTypes2.default.array,
+  barTickValues: _propTypes2.default.array,
   ratio: _propTypes2.default.number,
   height: _propTypes2.default.number,
+  width: _propTypes2.default.number,
   chartMargin: _propTypes2.default.shape({
     left: _propTypes2.default.number,
     right: _propTypes2.default.number,
@@ -218,17 +270,21 @@ stockChartKline.propTypes = {
     bottom: _propTypes2.default.number
   }),
   showGrid: _propTypes2.default.bool,
+  offset: _propTypes2.default.number,
   backgroundColor: _propTypes2.default.string
 };
 
 stockChartKline.defaultProps = {
   type: 'hybrid',
   lineChartHeight: 168,
-  barChartHeight: 40,
+  barChartHeight: 50,
+  lineTickValues: [],
+  barTickValues: [],
+  offset: 3,
   chartMargin: {
     left: 5, right: 5, top: 10, bottom: 0
   },
   showGrid: true
 };
 
-exports.default = _cefcReactstockcharts.helper.fitDimensions(stockChartKline);
+exports.default = _cefcStockcharts.helper.fitDimensions(stockChartKline);

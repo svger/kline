@@ -12,7 +12,7 @@ import {
   tooltip,
   scale,
   series
-} from 'cefc-reactstockcharts';
+} from 'cefc-stockcharts';
 import styles from './style/index.less';
 const numberFormat = format('.2f');
 
@@ -92,14 +92,14 @@ class stockChartKline extends Component {
     let lineYGrid = {};
     let lineYDashGrid = {};
 
-    if (lineTickValues.length >= 5) {
+    if (lineTickValues.length >= 4) {
       lineYGrid = showGrid ? {
         innerTickSize: -1 * gridWidth,
         tickStrokeDasharray: 'Solid',
         tickStrokeOpacity: 1,
         tickStrokeWidth: 1,
         tickSize: 100,
-        tickValues: [lineTickValues[0], lineTickValues[2], lineTickValues[4]]
+        tickValues: [lineTickValues[0], lineTickValues[2]]
       } : {};
 
       lineYDashGrid = showGrid ? {
