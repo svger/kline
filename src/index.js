@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { format } from 'd3-format';
 import {
   ChartCanvas,
   Chart,
@@ -14,6 +13,8 @@ import {
   series
 } from 'cefc-stockcharts';
 import styles from './style/index.less';
+import { format } from 'd3-format';
+const numberFormat = format('.2f');
 
 /**
  * @description 将纯数字转换为包含中文单位万或者亿的数量
