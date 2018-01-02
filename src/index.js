@@ -30,7 +30,7 @@ const unitFormat = (config) => {
   let precision = 2; // 小数点精度，默认显示2位小数
   let isInteger = false; //是否是整数，不显示小数点
   let defaultValue = '--'; //默认显示
-  let minUnitNum = 1000000;
+  let minUnitNum = 100000;
   const ONE_MILLION = 1000000;
 
   if (typeof config === 'object') {
@@ -121,7 +121,7 @@ function tooltipContent(ys) {
         lowHighLabel,
         {
           label: '成交量',
-          value: currentItem.volume && unitFormat({ value: currentItem.volume })
+          value: currentItem.volume && unitFormat({ value: currentItem.volume }) + '手'
         }
       ]
         .concat(ys.map(each => ({
