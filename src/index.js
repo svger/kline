@@ -82,7 +82,7 @@ function tooltipContent(ys) {
 class stockChartKline extends Component {
 
   render() {
-    let { type, chartData, width, ratio, height, lineChartHeight, barChartHeight, chartMargin, showGrid, offset, backgroundColor, lineTickValues, barTickValues  } = this.props;
+    let { type, chartData, width, ratio, height, style, lineChartHeight, barChartHeight, chartMargin, showGrid, offset, backgroundColor, lineTickValues, barTickValues  } = this.props;
     const xScaleProvider = scale.discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
     const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(chartData);
     const start = xAccessor(utils.last(data));
@@ -120,9 +120,10 @@ class stockChartKline extends Component {
       tickSize: 100,
       tickValues: barTickValues
     } : {};
+    style.backgroundColor = backgroundColor;
 
     return (
-      <div className="container_bg_ChatBkg" style={{'backgroundColor': backgroundColor}}>
+      <div className="container_bg_ChatBkg" style={style} >
         <ChartCanvas height={height} width={width} ratio={ratio} margin={chartMargin} type={type} displayXAccessor={displayXAccessor} seriesName="MSFT" data={data} xScale={xScale} xAccessor={xAccessor} xExtents={xExtents} zIndex={0} panEvent mouseMoveEvent zoomEvent={false} clamp={false}>
           <Chart id={1} yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]} height={lineChartHeight} origin={(w, h) => [0, 0]}>
             <axes.XAxis axisAt="bottom" orient="bottom" zoomEnabled={false} showTicks={false} showDomain={false} />
@@ -190,6 +191,7 @@ stockChartKline.propTypes = {
   }),
   showGrid: PropTypes.bool,
   offset: PropTypes.number,
+  style: PropTypes.object,
   backgroundColor: PropTypes.string
 };
 
@@ -203,7 +205,8 @@ stockChartKline.defaultProps = {
   chartMargin: {
     left: 5, right: 5, top: 10, bottom: 0
   },
-  showGrid: true
+  showGrid: true,
+  style: {}
 };
 
 export default helper.fitDimensions(stockChartKline);
