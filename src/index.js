@@ -14,7 +14,60 @@ import {
   series
 } from 'cefc-stockcharts';
 import styles from './style/index.less';
-const numberFormat = format('.2f');
+
+/**
+ * @description 将纯数字转换为包含中文单位万或者亿的数量
+ * @author CarltonXiang
+ * @config config
+ *  @param num  待格式化的数字
+ *  @param isInteger  是否显示整数
+ *  @param precision 小数点精度 3代表显示3位小数，2代表显示2位小数
+ *  @param defaultValue 默认显示
+ */
+const unitFormat = (config) => {
+  let value = '';
+  let precision = 2; // 小数点精度，默认显示2位小数
+  let isInteger = false; //是否是整数，不显示小数点
+  let defaultValue = '--'; //默认显示
+  let minUnitNum = 1000000;
+  const ONE_MILLION = 1000000;
+
+  if (typeof config === 'object') {
+    value = config.value;
+    precision = config.precision || precision;
+    isInteger = config.isInteger || isInteger;
+    defaultValue = config.defaultValue || defaultValue;
+    minUnitNum = config.minUnitNum || minUnitNum;
+  } else {
+    value = config;
+  }
+
+  let retNum = parseFloat(value);
+
+  //若不是数字，返回默认数字
+  if (isNaN(retNum)) {
+
+    return defaultValue;
+  }
+
+  const YI = ONE_MILLION * 100;
+  const WAN = ONE_MILLION / 100;
+
+  const baseRate = retNum >= YI ? YI : (retNum >= minUnitNum ? WAN : 1);
+  const integerName = retNum >= YI ? '亿' : (retNum >= minUnitNum ? '万' : '');
+
+  retNum = retNum / baseRate;
+
+  //数字1亿显示亿，大于百万显示万
+  if (isInteger) {
+    return `${Math.round(retNum)}${integerName}`;
+  }
+
+  const scale = Math.pow(10, parseInt(precision));
+  retNum = isInteger ? Math.round(retNum) : parseFloat((Math.round(retNum * scale) / scale).toFixed(precision));
+
+  return integerName ? `${retNum}${integerName}` : parseFloat(retNum);
+}
 
 function tooltipContent(ys) {
   return ({ currentItem, xAccessor }) => {
@@ -67,7 +120,7 @@ function tooltipContent(ys) {
         lowHighLabel,
         {
           label: '成交量',
-          value: currentItem.volume && numberFormat(currentItem.volume)
+          value: currentItem.volume && unitFormat({ value: currentItem.volume })
         }
       ]
         .concat(ys.map(each => ({
