@@ -12,8 +12,8 @@ import {
   scale,
   series
 } from 'cefc-stockcharts';
-import styles from './style/index.less';
 import { format } from 'd3-format';
+import styles from './style/index.less';
 const numberFormat = format('.2f');
 
 /**
