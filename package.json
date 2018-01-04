@@ -1,6 +1,6 @@
 {
   "name": "cefc-kline",
-  "version": "0.0.24",
+  "version": "0.0.28",
   "description": "CEFC-UI Component",
   "main": "build/index.js",
   "scripts": {
@@ -14,14 +14,14 @@
   "author": "Johnny",
   "license": "ISC",
   "dependencies": {
-    "cefc-stockcharts": "0.0.9",
+    "cefc-stockcharts": "0.0.10",
     "cefc-ui-style": "0.0.1",
     "cefc-utils": "0.0.3",
     "prop-types": "^15.6.0"
   },
   "devDependencies": {
     "babel-loader": "^7.1.2",
-    "cefc-tools": "0.0.4",
+    "cefc-tools": "0.0.10",
     "classnames": "^2.2.5",
     "react": "~16.1.1",
     "react-dom": "~16.1.1"

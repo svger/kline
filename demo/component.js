@@ -108,7 +108,7 @@ class App extends React.Component {
 
       return (
       <div className="demoContainer">
-        <Kline chartData={finalData} chartMargin={{left: 0, right: 0, top: 10, bottom: 0}} showGrid={true} backgroundColor="#393c43" barTickValues={[780093]} lineTickValues={[12.6, 12.9]}/>
+        <Kline chartData={finalData} chartMargin={{left: 0, right: 0, top: 10, bottom: 0}} showGrid={true} backgroundColor="#393c43" barTickValues={[780093]} lineTickValues={[12.6, 12.9]} gridLabel={{"startDay":"2017/10/26","endDay":"2018/01/04","yAxisLeft":["26.60","30.22","33.83"],"volumeMax":"108.18万"}}/>
       </div>
     );
   }

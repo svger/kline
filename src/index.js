@@ -70,7 +70,45 @@ const unitFormat = (config) => {
   return integerName ? `${retNum}${integerName}` : parseFloat(retNum);
 }
 
-function tooltipContent(ys) {
+
+/**
+ * @description 格式化数字，根据数据精度，显示小数点的位数
+ * @author CarltonXiang
+ * @config
+ *  @param value  待格式化的数字
+ *  @param precision 小数点精度 3代表显示3位小数，2代表显示2位小数
+ *  @param defaultValue 默认显示
+ * @returns {string}
+ */
+const decimalFormat = (config) => {
+  let value = '';
+  let precision = 2; // 小数点精度，默认显示2位小数
+  let defaultValue = '--'; //默认显示
+
+  if (typeof config === 'object') {
+    value = config.value;
+    precision = config.precision || precision;
+    defaultValue = config.defaultValue || defaultValue;
+  } else {
+    value = config;
+    precision = preci ? preci : precision;
+  }
+
+  let returnNum = parseFloat(value);
+
+  //不是数字，返回默认显示
+  if (isNaN(returnNum)) {
+
+    return defaultValue;
+  }
+
+  const val = returnNum * Math.pow(10, precision);
+
+  return (Math.round(val) / Math.pow(10, precision)).toFixed(precision);
+};
+
+
+function tooltipContent(ys, precision) {
   return ({ currentItem, xAccessor }) => {
     let xTime = currentItem.date;
     let year = xTime.getFullYear();
@@ -121,12 +159,12 @@ function tooltipContent(ys) {
         lowHighLabel,
         {
           label: '成交量',
-          value: currentItem.volume && unitFormat({ value: currentItem.volume }) + '手'
+          value: currentItem.volume && unitFormat({ value: currentItem.volume , precision: precision}) + '手'
         }
       ]
         .concat(ys.map(each => ({
           label: each.label,
-          value: each.value(currentItem),
+          value: decimalFormat({ value:  Number(each.value(currentItem)) , precision: precision}),
           stroke: each.stroke
         }))).filter(line => line.value)
     };
@@ -136,7 +174,7 @@ function tooltipContent(ys) {
 class stockChartKline extends Component {
 
   render() {
-    let { type, chartData, width, ratio, height, style, lineChartHeight, barChartHeight, chartMargin, showGrid, offset, backgroundColor, lineTickValues, barTickValues, eventCoordinateReverse, gridLabel } = this.props;
+    let { type, chartData, width, ratio, height, style, lineChartHeight, barChartHeight, chartMargin, showGrid, offset, backgroundColor, lineTickValues, barTickValues, eventCoordinateReverse, gridLabel, precision } = this.props;
     const { startDay, endDay, yAxisLeft, volumeMax } = gridLabel;
     const xScaleProvider = scale.discontinuousTimeScaleProvider.inputDateAccessor(d => d.date);
     const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(chartData);
@@ -179,7 +217,7 @@ class stockChartKline extends Component {
 
     return (
       <div className="container_bg_ChatBkg" style={style} >
-        <div className="realTimeOpenCloseTime">
+        <div className="realTimeOpenCloseTimeKLine">
           <span className="fl_left">{startDay}</span>
           <span className="fl_right">{endDay}</span>
           <span className="yAxisLeft_top">{yAxisLeft[2]}</span>
@@ -215,7 +253,7 @@ class stockChartKline extends Component {
                         value: d => d.MA30,
                         stroke: 'magenta'
                     }
-                    ])}
+                    ], precision)}
                 fontSize={12}
                 offset={offset}
             />
@@ -259,6 +297,7 @@ stockChartKline.propTypes = {
   backgroundColor: PropTypes.string,
   isIndex: PropTypes.bool,
   gridLabel: PropTypes.object,
+  precision: PropTypes.number
 };
 
 stockChartKline.defaultProps = {
@@ -275,6 +314,7 @@ stockChartKline.defaultProps = {
   showGrid: true,
   style: {},
   isIndex: false,
+  precision: 2
 };
 
 export default helper.fitDimensions(stockChartKline);
