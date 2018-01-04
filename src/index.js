@@ -12,9 +12,7 @@ import {
   scale,
   series
 } from 'cefc-stockcharts';
-import { format } from 'd3-format';
 import styles from './style/index.less';
-const numberFormat = format('.2f');
 
 /**
  * @description 将纯数字转换为包含中文单位万或者亿的数量
@@ -135,9 +133,9 @@ function tooltipContent(ys, precision) {
       currentItem.open && (openCloseLabel.label = '开盘价');
       !currentItem.open && currentItem.close && (openCloseLabel.label = '收盘价');
       // 判断openCloseLabel.value等于什么
-      let openValue = currentItem.open && numberFormat(currentItem.open);
+      let openValue = currentItem.open && decimalFormat({ value:  Number(currentItem.open) , precision: precision});
       let closeLabel = currentItem.close && '收盘价';
-      let closeValue = currentItem.close && numberFormat(currentItem.close);
+      let closeValue = currentItem.close && decimalFormat({ value:  Number(currentItem.close) , precision: precision});
       openCloseLabel.value = `${openValue}  ${closeLabel}: ${closeValue}`;
     }
 
@@ -146,9 +144,9 @@ function tooltipContent(ys, precision) {
       currentItem.high && (lowHighLabel.label = '最高价');
       !currentItem.high && currentItem.low && (lowHighLabel.label = '最低价');
       // 判断lowHighLabel.value等于什么
-      let highValue = currentItem.high && numberFormat(currentItem.high);
+      let highValue = currentItem.high && decimalFormat({ value:  Number(currentItem.high) , precision: precision});
       let lowLabel = currentItem.low && '最低价';
-      let lowValue = currentItem.low && numberFormat(currentItem.low);
+      let lowValue = currentItem.low && decimalFormat({ value:  Number(currentItem.low) , precision: precision});
       lowHighLabel.value = `${highValue}  ${lowLabel}: ${lowValue}`;
     }
 
