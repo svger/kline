@@ -8,6 +8,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -16,11 +18,9 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _d3Format = require('d3-format');
-
 var _cefcStockcharts = require('cefc-stockcharts');
 
-var _index = require('./style/index.less');
+var _index = require('./style/index.css');
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -32,9 +32,97 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var numberFormat = (0, _d3Format.format)('.2f');
+/**
+ * @description 将纯数字转换为包含中文单位万或者亿的数量
+ * @author CarltonXiang
+ * @config config
+ *  @param num  待格式化的数字
+ *  @param isInteger  是否显示整数
+ *  @param precision 小数点精度 3代表显示3位小数，2代表显示2位小数
+ *  @param defaultValue 默认显示
+ */
+var unitFormat = function unitFormat(config) {
+  var value = '';
+  var precision = 2; // 小数点精度，默认显示2位小数
+  var isInteger = false; //是否是整数，不显示小数点
+  var defaultValue = '--'; //默认显示
+  var minUnitNum = 100000;
+  var ONE_MILLION = 1000000;
 
-function tooltipContent(ys) {
+  if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
+    value = config.value;
+    precision = config.precision || precision;
+    isInteger = config.isInteger || isInteger;
+    defaultValue = config.defaultValue || defaultValue;
+    minUnitNum = config.minUnitNum || minUnitNum;
+  } else {
+    value = config;
+  }
+
+  var retNum = parseFloat(value);
+
+  //若不是数字，返回默认数字
+  if (isNaN(retNum)) {
+
+    return defaultValue;
+  }
+
+  var YI = ONE_MILLION * 100;
+  var WAN = ONE_MILLION / 100;
+
+  var baseRate = retNum >= YI ? YI : retNum >= minUnitNum ? WAN : 1;
+  var integerName = retNum >= YI ? '亿' : retNum >= minUnitNum ? '万' : '';
+
+  retNum = retNum / baseRate;
+
+  //数字1亿显示亿，大于百万显示万
+  if (isInteger) {
+    return '' + Math.round(retNum) + integerName;
+  }
+
+  var scale = Math.pow(10, parseInt(precision));
+  retNum = isInteger ? Math.round(retNum) : parseFloat((Math.round(retNum * scale) / scale).toFixed(precision));
+
+  return integerName ? '' + retNum + integerName : parseFloat(retNum);
+};
+
+/**
+ * @description 格式化数字，根据数据精度，显示小数点的位数
+ * @author CarltonXiang
+ * @config
+ *  @param value  待格式化的数字
+ *  @param precision 小数点精度 3代表显示3位小数，2代表显示2位小数
+ *  @param defaultValue 默认显示
+ * @returns {string}
+ */
+var decimalFormat = function decimalFormat(config) {
+  var value = '';
+  var precision = 2; // 小数点精度，默认显示2位小数
+  var defaultValue = '--'; //默认显示
+
+  if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
+    value = config.value;
+    precision = config.precision || precision;
+    defaultValue = config.defaultValue || defaultValue;
+  } else {
+    value = config;
+    precision = preci ? preci : precision;
+  }
+
+  var returnNum = parseFloat(value);
+
+  //不是数字，返回默认显示
+  if (isNaN(returnNum)) {
+
+    return defaultValue;
+  }
+
+  var val = returnNum * Math.pow(10, precision);
+
+  return (Math.round(val) / Math.pow(10, precision)).toFixed(precision);
+};
+
+function tooltipContent(ys, precision) {
   return function (_ref) {
     var currentItem = _ref.currentItem,
         xAccessor = _ref.xAccessor;
@@ -70,9 +158,9 @@ function tooltipContent(ys) {
       currentItem.open && (openCloseLabel.label = '开盘价');
       !currentItem.open && currentItem.close && (openCloseLabel.label = '收盘价');
       // 判断openCloseLabel.value等于什么
-      var openValue = currentItem.open && numberFormat(currentItem.open);
+      var openValue = currentItem.open && decimalFormat({ value: Number(currentItem.open), precision: precision });
       var closeLabel = currentItem.close && '收盘价';
-      var closeValue = currentItem.close && numberFormat(currentItem.close);
+      var closeValue = currentItem.close && decimalFormat({ value: Number(currentItem.close), precision: precision });
       openCloseLabel.value = openValue + '  ' + closeLabel + ': ' + closeValue;
     }
 
@@ -81,9 +169,9 @@ function tooltipContent(ys) {
       currentItem.high && (lowHighLabel.label = '最高价');
       !currentItem.high && currentItem.low && (lowHighLabel.label = '最低价');
       // 判断lowHighLabel.value等于什么
-      var highValue = currentItem.high && numberFormat(currentItem.high);
+      var highValue = currentItem.high && decimalFormat({ value: Number(currentItem.high), precision: precision });
       var lowLabel = currentItem.low && '最低价';
-      var lowValue = currentItem.low && numberFormat(currentItem.low);
+      var lowValue = currentItem.low && decimalFormat({ value: Number(currentItem.low), precision: precision });
       lowHighLabel.value = highValue + '  ' + lowLabel + ': ' + lowValue;
     }
 
@@ -91,11 +179,11 @@ function tooltipContent(ys) {
       x: currentDate,
       y: [openCloseLabel, lowHighLabel, {
         label: '成交量',
-        value: currentItem.volume && numberFormat(currentItem.volume)
+        value: currentItem.volume && unitFormat({ value: currentItem.volume, precision: precision }) + '手'
       }].concat(ys.map(function (each) {
         return {
           label: each.label,
-          value: each.value(currentItem),
+          value: decimalFormat({ value: Number(each.value(currentItem)), precision: precision }),
           stroke: each.stroke
         };
       })).filter(function (line) {
@@ -123,6 +211,7 @@ var stockChartKline = function (_Component) {
           width = _props.width,
           ratio = _props.ratio,
           height = _props.height,
+          style = _props.style,
           lineChartHeight = _props.lineChartHeight,
           barChartHeight = _props.barChartHeight,
           chartMargin = _props.chartMargin,
@@ -130,7 +219,14 @@ var stockChartKline = function (_Component) {
           offset = _props.offset,
           backgroundColor = _props.backgroundColor,
           lineTickValues = _props.lineTickValues,
-          barTickValues = _props.barTickValues;
+          barTickValues = _props.barTickValues,
+          eventCoordinateReverse = _props.eventCoordinateReverse,
+          gridLabel = _props.gridLabel,
+          precision = _props.precision;
+      var startDay = gridLabel.startDay,
+          endDay = gridLabel.endDay,
+          yAxisLeft = gridLabel.yAxisLeft,
+          volumeMax = gridLabel.volumeMax;
 
       var xScaleProvider = _cefcStockcharts.scale.discontinuousTimeScaleProvider.inputDateAccessor(function (d) {
         return d.date;
@@ -177,13 +273,48 @@ var stockChartKline = function (_Component) {
         tickSize: 100,
         tickValues: barTickValues
       } : {};
+      style.backgroundColor = backgroundColor;
 
       return _react2.default.createElement(
         'div',
-        { className: 'container_bg_ChatBkg', style: { 'backgroundColor': backgroundColor } },
+        { className: 'container_bg_ChatBkg', style: style },
+        _react2.default.createElement(
+          'div',
+          { className: 'realTimeOpenCloseTimeKLine' },
+          _react2.default.createElement(
+            'span',
+            { className: 'fl_left' },
+            startDay
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'fl_right' },
+            endDay
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'yAxisLeft_top' },
+            yAxisLeft[2]
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'yAxisLeft_middle' },
+            yAxisLeft[1]
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'yAxisLeft_bottom' },
+            yAxisLeft[0]
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'show_vol' },
+            volumeMax
+          )
+        ),
         _react2.default.createElement(
           _cefcStockcharts.ChartCanvas,
-          { height: height, width: width, ratio: ratio, margin: chartMargin, type: type, displayXAccessor: displayXAccessor, seriesName: 'MSFT', data: data, xScale: xScale, xAccessor: xAccessor, xExtents: xExtents, zIndex: 0, panEvent: true, mouseMoveEvent: true, zoomEvent: false, clamp: false },
+          { height: height, width: width, ratio: ratio, margin: chartMargin, type: type, displayXAccessor: displayXAccessor, seriesName: 'MSFT', data: data, xScale: xScale, xAccessor: xAccessor, xExtents: xExtents, zIndex: 0, eventCoordinateReverse: eventCoordinateReverse, panEvent: true, mouseMoveEvent: true, zoomEvent: false, clamp: false },
           _react2.default.createElement(
             _cefcStockcharts.Chart,
             { id: 1, yExtents: [function (d) {
@@ -223,7 +354,7 @@ var stockChartKline = function (_Component) {
                   return d.MA30;
                 },
                 stroke: 'magenta'
-              }]),
+              }], precision),
               fontSize: 12,
               offset: offset
             })
@@ -271,7 +402,12 @@ stockChartKline.propTypes = {
   }),
   showGrid: _propTypes2.default.bool,
   offset: _propTypes2.default.number,
-  backgroundColor: _propTypes2.default.string
+  style: _propTypes2.default.object,
+  eventCoordinateReverse: _propTypes2.default.bool,
+  backgroundColor: _propTypes2.default.string,
+  isIndex: _propTypes2.default.bool,
+  gridLabel: _propTypes2.default.object,
+  precision: _propTypes2.default.number
 };
 
 stockChartKline.defaultProps = {
@@ -281,10 +417,14 @@ stockChartKline.defaultProps = {
   lineTickValues: [],
   barTickValues: [],
   offset: 3,
+  eventCoordinateReverse: false,
   chartMargin: {
     left: 5, right: 5, top: 10, bottom: 0
   },
-  showGrid: true
+  showGrid: true,
+  style: {},
+  isIndex: false,
+  precision: 2
 };
 
 exports.default = _cefcStockcharts.helper.fitDimensions(stockChartKline);

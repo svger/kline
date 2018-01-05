@@ -12,6 +12,7 @@ import {
   scale,
   series
 } from 'cefc-stockcharts';
+import cx from 'classnames';
 import styles from './style/index.less';
 
 /**
@@ -212,6 +213,11 @@ class stockChartKline extends Component {
       tickValues: barTickValues
     } : {};
     style.backgroundColor = backgroundColor;
+    let landscape = false;
+
+    if (height <= width) { //说明是横屏
+      landscape = true;
+    }
 
     return (
       <div className="container_bg_ChatBkg" style={style} >
@@ -220,8 +226,8 @@ class stockChartKline extends Component {
           <span className="fl_right">{endDay}</span>
           <span className="yAxisLeft_top">{yAxisLeft[2]}</span>
           <span className="yAxisLeft_middle">{yAxisLeft[1]}</span>
-          <span className="yAxisLeft_bottom">{yAxisLeft[0]}</span>
-          <span className="show_vol">{volumeMax}</span>
+          <span className={cx('yAxisLeft_bottom', { landscape: landscape })}>{yAxisLeft[0]}</span>
+          <span className={cx('show_vol', { landscape: landscape })}>{volumeMax}</span>
         </div>
         <ChartCanvas height={height} width={width} ratio={ratio} margin={chartMargin} type={type} displayXAccessor={displayXAccessor} seriesName="MSFT" data={data} xScale={xScale} xAccessor={xAccessor} xExtents={xExtents} zIndex={0} eventCoordinateReverse={eventCoordinateReverse} panEvent mouseMoveEvent zoomEvent={false} clamp={false}>
           <Chart id={1} yExtents={[d => [d.high, d.low, d.MA5, d.MA10, d.MA30]]} height={lineChartHeight} origin={(w, h) => [0, 0]}>

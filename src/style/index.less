@@ -1,67 +1,73 @@
 @cellPrefixCls: cefc-kline;
 @space: .15rem;
-@font-size-small:                        .12rem;
+@font-size-small: .12rem;
 @gap: 0;
 @xAxisLabelHeight: .18rem;
 
 .demoContainer {
-    height: 252px;
+  height: 252px;
 }
 
 .container_bg_ChatBkg {
-    width: 100%;
-    height: 100%;
-    position: relative;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .realTimeOpenCloseTimeKLine {
-    color: #c5c5c5;
-    font-size: @font-size-small;
-    //position: absolute;
-    //width: 100%;
-    //bottom: 0;
-    //height: @xAxisLabelHeight;
-    //box-sizing: border-box;
-    //color: #c5c5c5;
-    //font-size: @font-size-small;
+  color: #c5c5c5;
+  font-size: @font-size-small;
+  //position: absolute;
+  //width: 100%;
+  //bottom: 0;
+  //height: @xAxisLabelHeight;
+  //box-sizing: border-box;
+  //color: #c5c5c5;
+  //font-size: @font-size-small;
 
-    .fl_left {
-        position: absolute;
-        left: @gap;
-        bottom: -0.15rem;
-    }
+  .fl_left {
+    position: absolute;
+    left: @gap;
+    bottom: -0.15rem;
+  }
 
-    .fl_right {
-        position: absolute;
-        right: @gap;
-        bottom: -0.15rem;
-        z-index: 5;
-    }
+  .fl_right {
+    position: absolute;
+    right: @gap;
+    bottom: -0.15rem;
+    z-index: 5;
+  }
 
-    .yAxisLeft_top {
-        position: absolute;
-        left: @gap;
-        top: 0;
-        z-index: 5;
-    }
+  .yAxisLeft_top {
+    position: absolute;
+    left: @gap;
+    top: 0;
+    z-index: 5;
+  }
 
-    .yAxisLeft_middle {
-        position: absolute;
-        left: @gap;
-        top: 35%;
-    }
+  .yAxisLeft_middle {
+    position: absolute;
+    left: @gap;
+    top: 35%;
+  }
 
-    .yAxisLeft_bottom {
-        position: absolute;
-        left: @gap;
-        top: 67%;
-        z-index: 5;
+  .yAxisLeft_bottom {
+    position: absolute;
+    left: @gap;
+    top: 67%;
+    z-index: 5;
+    &.landscape {
+      top: 62%;
     }
+  }
 
-    .show_vol{
-        position: absolute;
-        left: @gap;
-        bottom: 15%;
-        z-index: 5;
+  .show_vol {
+    position: absolute;
+    left: @gap;
+    bottom: 15%;
+    z-index: 5;
+    &.landscape {
+      bottom: 17%;
     }
+  }
 }
