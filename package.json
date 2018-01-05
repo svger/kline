@@ -1,6 +1,6 @@
 {
   "name": "cefc-kline",
-  "version": "0.0.28",
+  "version": "0.0.30",
   "description": "CEFC-UI Component",
   "main": "build/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "author": "Johnny",
   "license": "ISC",
   "dependencies": {
-    "cefc-stockcharts": "0.0.10",
+    "cefc-stockcharts": "0.0.11",
     "cefc-ui-style": "0.0.1",
     "cefc-utils": "0.0.3",
     "prop-types": "^15.6.0"
