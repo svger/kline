@@ -1,0 +1,72 @@
+.demoContainer {
+  height: 252px;
+}
+.container_bg_ChatBkg {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.realTimeOpenCloseTimeKLine {
+  color: #c5c5c5;
+  font-size: 0.12rem;
+}
+.realTimeOpenCloseTimeKLine .fl_left {
+  position: absolute;
+  left: 0;
+  bottom: -0.15rem;
+}
+.realTimeOpenCloseTimeKLine .fl_left.landscape {
+  -webkit-transform: translateZ(100px);
+          transform: translateZ(100px);
+}
+.realTimeOpenCloseTimeKLine .fl_right {
+  position: absolute;
+  right: 0;
+  bottom: -0.15rem;
+  z-index: 5;
+}
+.realTimeOpenCloseTimeKLine .fl_right.landscape {
+  -webkit-transform: translateZ(100px);
+          transform: translateZ(100px);
+}
+.realTimeOpenCloseTimeKLine .yAxisLeft_top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+}
+.realTimeOpenCloseTimeKLine .yAxisLeft_top.landscape {
+  -webkit-transform: translateZ(100px);
+          transform: translateZ(100px);
+}
+.realTimeOpenCloseTimeKLine .yAxisLeft_middle {
+  position: absolute;
+  left: 0;
+  top: 35%;
+}
+.realTimeOpenCloseTimeKLine .yAxisLeft_middle.landscape {
+  -webkit-transform: translateZ(100px);
+          transform: translateZ(100px);
+}
+.realTimeOpenCloseTimeKLine .yAxisLeft_bottom {
+  position: absolute;
+  left: 0;
+  top: 67%;
+  z-index: 5;
+}
+.realTimeOpenCloseTimeKLine .yAxisLeft_bottom.landscape {
+  top: 62%;
+  -webkit-transform: translateZ(100px);
+          transform: translateZ(100px);
+}
+.realTimeOpenCloseTimeKLine .show_vol {
+  position: absolute;
+  left: 0;
+  bottom: 15%;
+  z-index: 5;
+}
+.realTimeOpenCloseTimeKLine .show_vol.landscape {
+  bottom: 17%;
+  -webkit-transform: translateZ(100px);
+          transform: translateZ(100px);
+}

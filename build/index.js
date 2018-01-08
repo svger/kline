@@ -20,6 +20,10 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _cefcStockcharts = require('cefc-stockcharts');
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var _index = require('./style/index.css');
 
 var _index2 = _interopRequireDefault(_index);
@@ -274,6 +278,12 @@ var stockChartKline = function (_Component) {
         tickValues: barTickValues
       } : {};
       style.backgroundColor = backgroundColor;
+      var landscape = false;
+
+      if (height <= width) {
+        //说明是横屏
+        landscape = true;
+      }
 
       return _react2.default.createElement(
         'div',
@@ -283,32 +293,32 @@ var stockChartKline = function (_Component) {
           { className: 'realTimeOpenCloseTimeKLine' },
           _react2.default.createElement(
             'span',
-            { className: 'fl_left' },
+            { className: (0, _classnames2.default)('fl_left', { landscape: landscape }) },
             startDay
           ),
           _react2.default.createElement(
             'span',
-            { className: 'fl_right' },
+            { className: (0, _classnames2.default)('fl_right', { landscape: landscape }) },
             endDay
           ),
           _react2.default.createElement(
             'span',
-            { className: 'yAxisLeft_top' },
+            { className: (0, _classnames2.default)('yAxisLeft_top', { landscape: landscape }) },
             yAxisLeft[2]
           ),
           _react2.default.createElement(
             'span',
-            { className: 'yAxisLeft_middle' },
+            { className: (0, _classnames2.default)('yAxisLeft_middle', { landscape: landscape }) },
             yAxisLeft[1]
           ),
           _react2.default.createElement(
             'span',
-            { className: 'yAxisLeft_bottom' },
+            { className: (0, _classnames2.default)('yAxisLeft_bottom', { landscape: landscape }) },
             yAxisLeft[0]
           ),
           _react2.default.createElement(
             'span',
-            { className: 'show_vol' },
+            { className: (0, _classnames2.default)('show_vol', { landscape: landscape }) },
             volumeMax
           )
         ),

@@ -222,10 +222,10 @@ class stockChartKline extends Component {
     return (
       <div className="container_bg_ChatBkg" style={style} >
         <div className="realTimeOpenCloseTimeKLine">
-          <span className="fl_left">{startDay}</span>
-          <span className="fl_right">{endDay}</span>
-          <span className="yAxisLeft_top">{yAxisLeft[2]}</span>
-          <span className="yAxisLeft_middle">{yAxisLeft[1]}</span>
+          <span className={cx('fl_left', { landscape: landscape })}>{startDay}</span>
+          <span className={cx('fl_right', { landscape: landscape })}>{endDay}</span>
+          <span className={cx('yAxisLeft_top', { landscape: landscape })}>{yAxisLeft[2]}</span>
+          <span className={cx('yAxisLeft_middle', { landscape: landscape })}>{yAxisLeft[1]}</span>
           <span className={cx('yAxisLeft_bottom', { landscape: landscape })}>{yAxisLeft[0]}</span>
           <span className={cx('show_vol', { landscape: landscape })}>{volumeMax}</span>
         </div>

@@ -29,6 +29,10 @@
     position: absolute;
     left: @gap;
     bottom: -0.15rem;
+
+    &.landscape {
+      transform: translateZ(100px);
+    }
   }
 
   .fl_right {
@@ -36,6 +40,10 @@
     right: @gap;
     bottom: -0.15rem;
     z-index: 5;
+
+    &.landscape {
+      transform: translateZ(100px);
+    }
   }
 
   .yAxisLeft_top {
@@ -43,12 +51,20 @@
     left: @gap;
     top: 0;
     z-index: 5;
+
+    &.landscape {
+      transform: translateZ(100px);
+    }
   }
 
   .yAxisLeft_middle {
     position: absolute;
     left: @gap;
     top: 35%;
+
+    &.landscape {
+      transform: translateZ(100px);
+    }
   }
 
   .yAxisLeft_bottom {
@@ -58,6 +74,7 @@
     z-index: 5;
     &.landscape {
       top: 62%;
+      transform: translateZ(100px);
     }
   }
 
@@ -68,6 +85,7 @@
     z-index: 5;
     &.landscape {
       bottom: 17%;
+      transform: translateZ(100px);
     }
   }
 }
