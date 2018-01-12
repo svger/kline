@@ -1,6 +1,6 @@
 {
   "name": "cefc-kline",
-  "version": "0.0.33",
+  "version": "0.0.38",
   "description": "CEFC-UI Component",
   "main": "build/index.js",
   "scripts": {

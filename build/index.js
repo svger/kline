@@ -201,9 +201,65 @@ var stockChartKline = function (_Component) {
   _inherits(stockChartKline, _Component);
 
   function stockChartKline() {
+    var _ref2;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, stockChartKline);
 
-    return _possibleConstructorReturn(this, (stockChartKline.__proto__ || Object.getPrototypeOf(stockChartKline)).apply(this, arguments));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = stockChartKline.__proto__ || Object.getPrototypeOf(stockChartKline)).call.apply(_ref2, [this].concat(args))), _this), _this.getChartStyle = function (_ref3) {
+      var showGrid = _ref3.showGrid,
+          lineTickValues = _ref3.lineTickValues,
+          barTickValues = _ref3.barTickValues,
+          chartMargin = _ref3.chartMargin,
+          height = _ref3.height,
+          width = _ref3.width;
+
+      var gridWidth = width - chartMargin.left - chartMargin.right;
+      var lineYGrid = {};
+      var lineYDashGrid = {};
+
+      if (lineTickValues.length >= 4) {
+        lineYGrid = showGrid ? {
+          innerTickSize: -1 * gridWidth,
+          tickStrokeDasharray: 'Solid',
+          tickStrokeOpacity: 1,
+          tickStrokeWidth: 1,
+          tickSize: 100,
+          tickValues: [lineTickValues[0], lineTickValues[2]]
+        } : {};
+
+        lineYDashGrid = showGrid ? {
+          innerTickSize: -1 * gridWidth,
+          tickStrokeDasharray: 'ShortDash',
+          tickStrokeOpacity: 1,
+          tickStrokeWidth: 1,
+          tickSize: 100,
+          tickValues: [lineTickValues[1], lineTickValues[3]]
+        } : {};
+      }
+
+      var barYGrid = showGrid ? {
+        innerTickSize: -1 * gridWidth,
+        tickStrokeDasharray: 'Solid',
+        tickStrokeOpacity: 1,
+        tickStrokeWidth: 1,
+        tickSize: 100,
+        tickValues: barTickValues
+      } : {};
+      var landscape = false;
+
+      if (height <= width) {
+        //说明是横屏
+        landscape = true;
+      }
+
+      return { lineYGrid: lineYGrid, barYGrid: barYGrid, lineYDashGrid: lineYDashGrid, landscape: landscape };
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(stockChartKline, [{
@@ -245,45 +301,14 @@ var stockChartKline = function (_Component) {
       var start = xAccessor(_cefcStockcharts.utils.last(data));
       var end = xAccessor(data[Math.max(0, data.length - 150)]);
       var xExtents = [start, end];
-      var gridWidth = width - chartMargin.left - chartMargin.right;
-      var lineYGrid = {};
-      var lineYDashGrid = {};
 
-      if (lineTickValues.length >= 4) {
-        lineYGrid = showGrid ? {
-          innerTickSize: -1 * gridWidth,
-          tickStrokeDasharray: 'Solid',
-          tickStrokeOpacity: 1,
-          tickStrokeWidth: 1,
-          tickSize: 100,
-          tickValues: [lineTickValues[0], lineTickValues[2]]
-        } : {};
+      var _getChartStyle = this.getChartStyle({ showGrid: showGrid, lineTickValues: lineTickValues, barTickValues: barTickValues, chartMargin: chartMargin, height: height, width: width }),
+          lineYGrid = _getChartStyle.lineYGrid,
+          barYGrid = _getChartStyle.barYGrid,
+          lineYDashGrid = _getChartStyle.lineYDashGrid,
+          landscape = _getChartStyle.landscape;
 
-        lineYDashGrid = showGrid ? {
-          innerTickSize: -1 * gridWidth,
-          tickStrokeDasharray: 'ShortDash',
-          tickStrokeOpacity: 1,
-          tickStrokeWidth: 1,
-          tickSize: 100,
-          tickValues: [lineTickValues[1], lineTickValues[3]]
-        } : {};
-      }
-
-      var barYGrid = showGrid ? {
-        innerTickSize: -1 * gridWidth,
-        tickStrokeDasharray: 'Solid',
-        tickStrokeOpacity: 1,
-        tickStrokeWidth: 1,
-        tickSize: 100,
-        tickValues: barTickValues
-      } : {};
       style.backgroundColor = backgroundColor;
-      var landscape = false;
-
-      if (height <= width) {
-        //说明是横屏
-        landscape = true;
-      }
 
       return _react2.default.createElement(
         'div',
@@ -304,17 +329,17 @@ var stockChartKline = function (_Component) {
           _react2.default.createElement(
             'span',
             { className: (0, _classnames2.default)('yAxisLeft_top', { landscape: landscape }) },
-            yAxisLeft[2]
+            yAxisLeft && yAxisLeft[2]
           ),
           _react2.default.createElement(
             'span',
             { className: (0, _classnames2.default)('yAxisLeft_middle', { landscape: landscape }) },
-            yAxisLeft[1]
+            yAxisLeft && yAxisLeft[1]
           ),
           _react2.default.createElement(
             'span',
             { className: (0, _classnames2.default)('yAxisLeft_bottom', { landscape: landscape }) },
-            yAxisLeft[0]
+            yAxisLeft && yAxisLeft[0]
           ),
           _react2.default.createElement(
             'span',

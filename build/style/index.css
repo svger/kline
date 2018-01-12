@@ -16,8 +16,15 @@
   bottom: -0.15rem;
 }
 .realTimeOpenCloseTimeKLine .fl_left.landscape {
+  transform: translateZ(100px);
   -webkit-transform: translateZ(100px);
-          transform: translateZ(100px);
+  /* Safari 和 Chrome */
+  -ms-transform: translateZ(100px);
+  /* IE 9 */
+  -moz-transform: translateZ(100px);
+  /* Firefox */
+  -o-transform: translateZ(100px);
+  /* Opera */
 }
 .realTimeOpenCloseTimeKLine .fl_right {
   position: absolute;
@@ -26,8 +33,15 @@
   z-index: 5;
 }
 .realTimeOpenCloseTimeKLine .fl_right.landscape {
+  transform: translateZ(100px);
   -webkit-transform: translateZ(100px);
-          transform: translateZ(100px);
+  /* Safari 和 Chrome */
+  -ms-transform: translateZ(100px);
+  /* IE 9 */
+  -moz-transform: translateZ(100px);
+  /* Firefox */
+  -o-transform: translateZ(100px);
+  /* Opera */
 }
 .realTimeOpenCloseTimeKLine .yAxisLeft_top {
   position: absolute;
@@ -36,17 +50,32 @@
   z-index: 5;
 }
 .realTimeOpenCloseTimeKLine .yAxisLeft_top.landscape {
+  transform: translateZ(100px);
   -webkit-transform: translateZ(100px);
-          transform: translateZ(100px);
+  /* Safari 和 Chrome */
+  -ms-transform: translateZ(100px);
+  /* IE 9 */
+  -moz-transform: translateZ(100px);
+  /* Firefox */
+  -o-transform: translateZ(100px);
+  /* Opera */
 }
 .realTimeOpenCloseTimeKLine .yAxisLeft_middle {
   position: absolute;
   left: 0;
   top: 35%;
+  z-index: 5;
 }
 .realTimeOpenCloseTimeKLine .yAxisLeft_middle.landscape {
+  transform: translateZ(100px);
   -webkit-transform: translateZ(100px);
-          transform: translateZ(100px);
+  /* Safari 和 Chrome */
+  -ms-transform: translateZ(100px);
+  /* IE 9 */
+  -moz-transform: translateZ(100px);
+  /* Firefox */
+  -o-transform: translateZ(100px);
+  /* Opera */
 }
 .realTimeOpenCloseTimeKLine .yAxisLeft_bottom {
   position: absolute;
@@ -56,8 +85,15 @@
 }
 .realTimeOpenCloseTimeKLine .yAxisLeft_bottom.landscape {
   top: 62%;
+  transform: translateZ(100px);
   -webkit-transform: translateZ(100px);
-          transform: translateZ(100px);
+  /* Safari 和 Chrome */
+  -ms-transform: translateZ(100px);
+  /* IE 9 */
+  -moz-transform: translateZ(100px);
+  /* Firefox */
+  -o-transform: translateZ(100px);
+  /* Opera */
 }
 .realTimeOpenCloseTimeKLine .show_vol {
   position: absolute;
@@ -67,6 +103,13 @@
 }
 .realTimeOpenCloseTimeKLine .show_vol.landscape {
   bottom: 17%;
+  transform: translateZ(100px);
   -webkit-transform: translateZ(100px);
-          transform: translateZ(100px);
+  /* Safari 和 Chrome */
+  -ms-transform: translateZ(100px);
+  /* IE 9 */
+  -moz-transform: translateZ(100px);
+  /* Firefox */
+  -o-transform: translateZ(100px);
+  /* Opera */
 }

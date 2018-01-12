@@ -171,6 +171,48 @@ function tooltipContent(ys, precision) {
 }
 
 class stockChartKline extends Component {
+  getChartStyle = ({ showGrid, lineTickValues, barTickValues, chartMargin, height, width }) => {
+    let gridWidth = width - chartMargin.left - chartMargin.right;
+    let lineYGrid = {};
+    let lineYDashGrid = {};
+
+    if (lineTickValues.length >= 4) {
+      lineYGrid = showGrid ? {
+            innerTickSize: -1 * gridWidth,
+            tickStrokeDasharray: 'Solid',
+            tickStrokeOpacity: 1,
+            tickStrokeWidth: 1,
+            tickSize: 100,
+            tickValues: [lineTickValues[0], lineTickValues[2]]
+          } : {};
+
+      lineYDashGrid = showGrid ? {
+            innerTickSize: -1 * gridWidth,
+            tickStrokeDasharray: 'ShortDash',
+            tickStrokeOpacity: 1,
+            tickStrokeWidth: 1,
+            tickSize: 100,
+            tickValues: [lineTickValues[1], lineTickValues[3]]
+          } : {};
+    }
+
+    let barYGrid = showGrid ? {
+          innerTickSize: -1 * gridWidth,
+          tickStrokeDasharray: 'Solid',
+          tickStrokeOpacity: 1,
+          tickStrokeWidth: 1,
+          tickSize: 100,
+          tickValues: barTickValues
+        } : {};
+    let landscape = false;
+
+    if (height <= width) { //说明是横屏
+      landscape = true;
+    }
+
+    return { lineYGrid, barYGrid, lineYDashGrid, landscape };
+  }
+
 
   render() {
     let { type, chartData, width, ratio, height, style, lineChartHeight, barChartHeight, chartMargin, showGrid, offset, backgroundColor, lineTickValues, barTickValues, eventCoordinateReverse, gridLabel, precision } = this.props;
@@ -180,53 +222,17 @@ class stockChartKline extends Component {
     const start = xAccessor(utils.last(data));
     const end = xAccessor(data[Math.max(0, data.length - 150)]);
     const xExtents = [start, end];
-    let gridWidth = width - chartMargin.left - chartMargin.right;
-    let lineYGrid = {};
-    let lineYDashGrid = {};
-
-    if (lineTickValues.length >= 4) {
-      lineYGrid = showGrid ? {
-        innerTickSize: -1 * gridWidth,
-        tickStrokeDasharray: 'Solid',
-        tickStrokeOpacity: 1,
-        tickStrokeWidth: 1,
-        tickSize: 100,
-        tickValues: [lineTickValues[0], lineTickValues[2]]
-      } : {};
-
-      lineYDashGrid = showGrid ? {
-        innerTickSize: -1 * gridWidth,
-        tickStrokeDasharray: 'ShortDash',
-        tickStrokeOpacity: 1,
-        tickStrokeWidth: 1,
-        tickSize: 100,
-        tickValues: [lineTickValues[1], lineTickValues[3]]
-      } : {};
-    }
-
-    let barYGrid = showGrid ? {
-      innerTickSize: -1 * gridWidth,
-      tickStrokeDasharray: 'Solid',
-      tickStrokeOpacity: 1,
-      tickStrokeWidth: 1,
-      tickSize: 100,
-      tickValues: barTickValues
-    } : {};
+    let { lineYGrid, barYGrid, lineYDashGrid, landscape } = this.getChartStyle({ showGrid, lineTickValues, barTickValues, chartMargin, height, width });
     style.backgroundColor = backgroundColor;
-    let landscape = false;
-
-    if (height <= width) { //说明是横屏
-      landscape = true;
-    }
 
     return (
       <div className="container_bg_ChatBkg" style={style} >
         <div className="realTimeOpenCloseTimeKLine">
           <span className={cx('fl_left', { landscape: landscape })}>{startDay}</span>
           <span className={cx('fl_right', { landscape: landscape })}>{endDay}</span>
-          <span className={cx('yAxisLeft_top', { landscape: landscape })}>{yAxisLeft[2]}</span>
-          <span className={cx('yAxisLeft_middle', { landscape: landscape })}>{yAxisLeft[1]}</span>
-          <span className={cx('yAxisLeft_bottom', { landscape: landscape })}>{yAxisLeft[0]}</span>
+          <span className={cx('yAxisLeft_top', { landscape: landscape })}>{yAxisLeft && yAxisLeft[2]}</span>
+          <span className={cx('yAxisLeft_middle', { landscape: landscape })}>{yAxisLeft && yAxisLeft[1]}</span>
+          <span className={cx('yAxisLeft_bottom', { landscape: landscape })}>{yAxisLeft && yAxisLeft[0]}</span>
           <span className={cx('show_vol', { landscape: landscape })}>{volumeMax}</span>
         </div>
         <ChartCanvas height={height} width={width} ratio={ratio} margin={chartMargin} type={type} displayXAccessor={displayXAccessor} seriesName="MSFT" data={data} xScale={xScale} xAccessor={xAccessor} xExtents={xExtents} zIndex={0} eventCoordinateReverse={eventCoordinateReverse} panEvent mouseMoveEvent zoomEvent={false} clamp={false}>
